@@ -505,6 +505,10 @@ name = "custom_vertex_attribute"
 path = "examples/shader/custom_vertex_attribute.rs"
 
 [[example]]
+name = "colorblind"
+path = "examples/shader/colorblind.rs"
+
+[[example]]
 name = "post_processing"
 path = "examples/shader/post_processing.rs"
 
