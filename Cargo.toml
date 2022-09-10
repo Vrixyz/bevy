@@ -1174,6 +1174,10 @@ path = "examples/shader/shader_material.rs"
 name = "shader_material_manual"
 path = "examples/shader/shader_material_manual.rs"
 
+[[example]]
+name = "shader_material_low_level"
+path = "examples/shader/shader_material_low_level.rs"
+
 [package.metadata.example.shader_material]
 name = "Material"
 description = "A shader and a material that uses it"

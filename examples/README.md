@@ -262,6 +262,7 @@ Example | Description
 [Instancing](../examples/shader/shader_instancing.rs) | A shader that renders a mesh multiple times in one draw call
 [Material - High level](../examples/shader/shader_material.rs) | A shader and a material that uses it with Bevy's high level API.
 [Material - Manual High Level](../examples/shader/shader_material_low_level.rs) | A shader and a material that uses it by implementing manually `AsBindGroup`.
+[Material - Low level API](../examples/shader/shader_material_low_level.rs) | A shader and a material (`RenderAsset`) that uses it with Bevy's low level API by setting up a custom pipeline.
 [Material - GLSL](../examples/shader/shader_material_glsl.rs) | A shader that uses the GLSL shading language
 [Material - Screenspace Texture](../examples/shader/shader_material_screenspace_texture.rs) | A shader that samples a texture with view-independent UV coordinates
 [Post Processing](../examples/shader/post_processing.rs) | A custom post processing effect, using two cameras, with one reusing the render texture of the first one
