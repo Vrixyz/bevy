@@ -96,11 +96,8 @@ pub(crate) mod test_setup {
     use bevy::{prelude::*, window::RequestRedraw};
 
     /// Switch between update modes when the mouse is clicked.
-    pub(crate) fn cycle_modes(
-        mut mode: ResMut<ExampleMode>,
-        mouse_button_input: Res<Input<KeyCode>>,
-    ) {
-        if mouse_button_input.just_pressed(KeyCode::Space) {
+    pub(crate) fn cycle_modes(mut mode: ResMut<ExampleMode>, mouse_button_input: Res<Input<Key>>) {
+        if mouse_button_input.just_pressed(Key::Space) {
             *mode = match *mode {
                 ExampleMode::Game => ExampleMode::Application,
                 ExampleMode::Application => ExampleMode::ApplicationWithRedraw,

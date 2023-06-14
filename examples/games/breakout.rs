@@ -309,18 +309,18 @@ fn setup(
 }
 
 fn move_paddle(
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<Input<Key>>,
     mut query: Query<&mut Transform, With<Paddle>>,
     time_step: Res<FixedTime>,
 ) {
     let mut paddle_transform = query.single_mut();
     let mut direction = 0.0;
 
-    if keyboard_input.pressed(KeyCode::ArrowLeft) {
+    if keyboard_input.pressed(Key::ArrowLeft) {
         direction -= 1.0;
     }
 
-    if keyboard_input.pressed(KeyCode::ArrowRight) {
+    if keyboard_input.pressed(Key::ArrowRight) {
         direction += 1.0;
     }
 

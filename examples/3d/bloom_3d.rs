@@ -116,7 +116,7 @@ fn update_bloom_settings(
     mut camera: Query<(Entity, Option<&mut BloomSettings>), With<Camera>>,
     mut text: Query<&mut Text>,
     mut commands: Commands,
-    keycode: Res<Input<KeyCode>>,
+    key: Res<Input<Key>>,
     time: Res<Time>,
 ) {
     let bloom_settings = camera.single_mut();
@@ -155,65 +155,65 @@ fn update_bloom_settings(
                 bloom_settings.prefilter_settings.threshold_softness
             ));
 
-            if keycode.just_pressed(KeyCode::Space) {
+            if key.just_pressed(Key::Space) {
                 commands.entity(entity).remove::<BloomSettings>();
             }
 
             let dt = time.delta_seconds();
 
-            if keycode.pressed(KeyCode::KeyA) {
+            if key.pressed(Key::Character("a".into())) {
                 bloom_settings.intensity -= dt / 10.0;
             }
-            if keycode.pressed(KeyCode::KeyQ) {
+            if key.pressed(Key::Character("q".into())) {
                 bloom_settings.intensity += dt / 10.0;
             }
             bloom_settings.intensity = bloom_settings.intensity.clamp(0.0, 1.0);
 
-            if keycode.pressed(KeyCode::KeyS) {
+            if key.pressed(Key::Character("s".into())) {
                 bloom_settings.low_frequency_boost -= dt / 10.0;
             }
-            if keycode.pressed(KeyCode::KeyW) {
+            if key.pressed(Key::Character("w".into())) {
                 bloom_settings.low_frequency_boost += dt / 10.0;
             }
             bloom_settings.low_frequency_boost = bloom_settings.low_frequency_boost.clamp(0.0, 1.0);
 
-            if keycode.pressed(KeyCode::KeyD) {
+            if key.pressed(Key::Character("d".into())) {
                 bloom_settings.low_frequency_boost_curvature -= dt / 10.0;
             }
-            if keycode.pressed(KeyCode::KeyE) {
+            if key.pressed(Key::Character("e".into())) {
                 bloom_settings.low_frequency_boost_curvature += dt / 10.0;
             }
             bloom_settings.low_frequency_boost_curvature =
                 bloom_settings.low_frequency_boost_curvature.clamp(0.0, 1.0);
 
-            if keycode.pressed(KeyCode::KeyF) {
+            if key.pressed(Key::Character("f".into())) {
                 bloom_settings.high_pass_frequency -= dt / 10.0;
             }
-            if keycode.pressed(KeyCode::KeyR) {
+            if key.pressed(Key::Character("r".into())) {
                 bloom_settings.high_pass_frequency += dt / 10.0;
             }
             bloom_settings.high_pass_frequency = bloom_settings.high_pass_frequency.clamp(0.0, 1.0);
 
-            if keycode.pressed(KeyCode::KeyG) {
+            if key.pressed(Key::Character("g".into())) {
                 bloom_settings.composite_mode = BloomCompositeMode::Additive;
             }
-            if keycode.pressed(KeyCode::KeyT) {
+            if key.pressed(Key::Character("t".into())) {
                 bloom_settings.composite_mode = BloomCompositeMode::EnergyConserving;
             }
 
-            if keycode.pressed(KeyCode::KeyH) {
+            if key.pressed(Key::Character("h".into())) {
                 bloom_settings.prefilter_settings.threshold -= dt;
             }
-            if keycode.pressed(KeyCode::KeyY) {
+            if key.pressed(Key::Character("y".into())) {
                 bloom_settings.prefilter_settings.threshold += dt;
             }
             bloom_settings.prefilter_settings.threshold =
                 bloom_settings.prefilter_settings.threshold.max(0.0);
 
-            if keycode.pressed(KeyCode::KeyJ) {
+            if key.pressed(Key::Character("j".into())) {
                 bloom_settings.prefilter_settings.threshold_softness -= dt / 10.0;
             }
-            if keycode.pressed(KeyCode::KeyU) {
+            if key.pressed(Key::Character("u".into())) {
                 bloom_settings.prefilter_settings.threshold_softness += dt / 10.0;
             }
             bloom_settings.prefilter_settings.threshold_softness = bloom_settings
@@ -225,7 +225,7 @@ fn update_bloom_settings(
         (entity, None) => {
             *text = "Bloom: Off (Toggle: Space)".to_string();
 
-            if keycode.just_pressed(KeyCode::Space) {
+            if key.just_pressed(Key::Space) {
                 commands.entity(entity).insert(BloomSettings::default());
             }
         }

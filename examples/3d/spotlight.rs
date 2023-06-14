@@ -137,28 +137,28 @@ fn light_sway(time: Res<Time>, mut query: Query<(&mut Transform, &mut SpotLight)
 }
 
 fn movement(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<Key>>,
     time: Res<Time>,
     mut query: Query<&mut Transform, With<Movable>>,
 ) {
     for mut transform in &mut query {
         let mut direction = Vec3::ZERO;
-        if input.pressed(KeyCode::ArrowUp) {
+        if input.pressed(Key::ArrowUp) {
             direction.z -= 1.0;
         }
-        if input.pressed(KeyCode::ArrowDown) {
+        if input.pressed(Key::ArrowDown) {
             direction.z += 1.0;
         }
-        if input.pressed(KeyCode::ArrowLeft) {
+        if input.pressed(Key::ArrowLeft) {
             direction.x -= 1.0;
         }
-        if input.pressed(KeyCode::ArrowRight) {
+        if input.pressed(Key::ArrowRight) {
             direction.x += 1.0;
         }
-        if input.pressed(KeyCode::PageUp) {
+        if input.pressed(Key::PageUp) {
             direction.y += 1.0;
         }
-        if input.pressed(KeyCode::PageDown) {
+        if input.pressed(Key::PageDown) {
             direction.y -= 1.0;
         }
 

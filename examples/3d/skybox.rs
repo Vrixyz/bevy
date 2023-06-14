@@ -188,7 +188,7 @@ pub struct CameraController {
     pub key_down: KeyCode,
     pub key_run: KeyCode,
     pub mouse_key_enable_mouse: MouseButton,
-    pub keyboard_key_enable_mouse: KeyCode,
+    pub keyboard_key_enable_mouse: Key,
     pub walk_speed: f32,
     pub run_speed: f32,
     pub friction: f32,
@@ -211,7 +211,7 @@ impl Default for CameraController {
             key_down: KeyCode::KeyQ,
             key_run: KeyCode::ShiftLeft,
             mouse_key_enable_mouse: MouseButton::Left,
-            keyboard_key_enable_mouse: KeyCode::KeyM,
+            keyboard_key_enable_mouse: Key::Character("m".into()),
             walk_speed: 2.0,
             run_speed: 6.0,
             friction: 0.5,
@@ -227,6 +227,7 @@ pub fn camera_controller(
     mut mouse_events: EventReader<MouseMotion>,
     mouse_button_input: Res<Input<MouseButton>>,
     key_input: Res<Input<KeyCode>>,
+    key_input_logic: Res<Input<Key>>,
     mut move_toggled: Local<bool>,
     mut query: Query<(&mut Transform, &mut CameraController), With<Camera>>,
 ) {
@@ -263,7 +264,7 @@ pub fn camera_controller(
         if key_input.pressed(options.key_down) {
             axis_input.y -= 1.0;
         }
-        if key_input.just_pressed(options.keyboard_key_enable_mouse) {
+        if key_input_logic.just_pressed(options.keyboard_key_enable_mouse.clone()) {
             *move_toggled = !*move_toggled;
         }
 

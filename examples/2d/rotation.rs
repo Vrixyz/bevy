@@ -117,7 +117,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 /// Demonstrates applying rotation and movement based on keyboard input.
 fn player_movement_system(
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<Input<Key>>,
     mut query: Query<(&Player, &mut Transform)>,
 ) {
     let (ship, mut transform) = query.single_mut();
@@ -125,15 +125,15 @@ fn player_movement_system(
     let mut rotation_factor = 0.0;
     let mut movement_factor = 0.0;
 
-    if keyboard_input.pressed(KeyCode::ArrowLeft) {
+    if keyboard_input.pressed(Key::ArrowLeft) {
         rotation_factor += 1.0;
     }
 
-    if keyboard_input.pressed(KeyCode::ArrowRight) {
+    if keyboard_input.pressed(Key::ArrowRight) {
         rotation_factor -= 1.0;
     }
 
-    if keyboard_input.pressed(KeyCode::ArrowUp) {
+    if keyboard_input.pressed(Key::ArrowUp) {
         movement_factor += 1.0;
     }
 

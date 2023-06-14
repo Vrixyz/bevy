@@ -179,8 +179,8 @@ fn listen_keyboard_input_events(
     mut edit_text: Query<(Entity, &mut Text), (Without<Node>, Without<Bubble>)>,
 ) {
     for event in events.iter() {
-        match event.key_code {
-            KeyCode::Enter => {
+        match event.logical_key {
+            Key::Enter => {
                 let (entity, text) = edit_text.single();
                 commands.entity(entity).insert(Bubble {
                     timer: Timer::from_seconds(5.0, TimerMode::Once),
@@ -191,7 +191,7 @@ fn listen_keyboard_input_events(
                     ..default()
                 });
             }
-            KeyCode::Backspace => {
+            Key::Backspace => {
                 edit_text.single_mut().1.sections[0].value.pop();
             }
             _ => continue,

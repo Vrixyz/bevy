@@ -110,15 +110,15 @@ fn setup_instructions(mut commands: Commands) {
     }),));
 }
 
-fn toggle_system(keycode: Res<Input<KeyCode>>, mut fog: Query<&mut FogSettings>) {
+fn toggle_system(key: Res<Input<Key>>, mut fog: Query<&mut FogSettings>) {
     let mut fog_settings = fog.single_mut();
 
-    if keycode.just_pressed(KeyCode::Space) {
+    if key.just_pressed(Key::Space) {
         let a = fog_settings.color.a();
         fog_settings.color.set_a(1.0 - a);
     }
 
-    if keycode.just_pressed(KeyCode::KeyS) {
+    if key.just_pressed(Key::Character("s".into())) {
         let a = fog_settings.directional_light_color.a();
         fog_settings.directional_light_color.set_a(0.5 - a);
     }

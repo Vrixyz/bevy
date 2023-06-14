@@ -225,12 +225,12 @@ impl Material for PrepassOutputMaterial {
 /// Every time you press space, it will cycle between transparent, depth and normals view
 fn toggle_prepass_view(
     mut prepass_view: Local<u32>,
-    keycode: Res<Input<KeyCode>>,
+    key: Res<Input<Key>>,
     material_handle: Query<&Handle<PrepassOutputMaterial>>,
     mut materials: ResMut<Assets<PrepassOutputMaterial>>,
     mut text: Query<&mut Text>,
 ) {
-    if keycode.just_pressed(KeyCode::Space) {
+    if key.just_pressed(Key::Space) {
         *prepass_view = (*prepass_view + 1) % 4;
 
         let label = match *prepass_view {

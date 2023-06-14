@@ -347,16 +347,16 @@ fn update_image_viewer(
 }
 
 fn toggle_scene(
-    keys: Res<Input<KeyCode>>,
+    keys: Res<Input<Key>>,
     mut query: Query<(&mut Visibility, &SceneNumber)>,
     mut current_scene: ResMut<CurrentScene>,
 ) {
     let mut pressed = None;
-    if keys.just_pressed(KeyCode::KeyQ) {
+    if keys.just_pressed(Key::Character("q".into())) {
         pressed = Some(1);
-    } else if keys.just_pressed(KeyCode::KeyW) {
+    } else if keys.just_pressed(Key::Character("w".into())) {
         pressed = Some(2);
-    } else if keys.just_pressed(KeyCode::KeyE) {
+    } else if keys.just_pressed(Key::Character("e".into())) {
         pressed = Some(3);
     }
 
@@ -422,7 +422,7 @@ impl SelectedParameter {
 }
 
 fn update_color_grading_settings(
-    keys: Res<Input<KeyCode>>,
+    keys: Res<Input<Key>>,
     time: Res<Time>,
     mut per_method_settings: ResMut<PerMethodSettings>,
     tonemapping: Query<&Tonemapping>,
@@ -432,17 +432,17 @@ fn update_color_grading_settings(
     let method = tonemapping.single();
     let color_grading = per_method_settings.settings.get_mut(method).unwrap();
     let mut dt = time.delta_seconds() * 0.25;
-    if keys.pressed(KeyCode::ArrowLeft) {
+    if keys.pressed(Key::ArrowLeft) {
         dt = -dt;
     }
 
-    if keys.just_pressed(KeyCode::ArrowDown) {
+    if keys.just_pressed(Key::ArrowDown) {
         selected_parameter.next();
     }
-    if keys.just_pressed(KeyCode::ArrowUp) {
+    if keys.just_pressed(Key::ArrowUp) {
         selected_parameter.prev();
     }
-    if keys.pressed(KeyCode::ArrowLeft) || keys.pressed(KeyCode::ArrowRight) {
+    if keys.pressed(Key::ArrowLeft) || keys.pressed(Key::ArrowRight) {
         match selected_parameter.value {
             0 => {
                 color_grading.exposure += dt;
@@ -460,13 +460,13 @@ fn update_color_grading_settings(
         }
     }
 
-    if keys.just_pressed(KeyCode::Space) {
+    if keys.just_pressed(Key::Space) {
         for (_, grading) in per_method_settings.settings.iter_mut() {
             *grading = ColorGrading::default();
         }
     }
 
-    if keys.just_pressed(KeyCode::Enter) && current_scene.0 == 1 {
+    if keys.just_pressed(Key::Enter) && current_scene.0 == 1 {
         for (mapper, grading) in per_method_settings.settings.iter_mut() {
             *grading = PerMethodSettings::basic_scene_recommendation(*mapper);
         }
@@ -479,7 +479,7 @@ fn update_ui(
     current_scene: Res<CurrentScene>,
     selected_parameter: Res<SelectedParameter>,
     mut hide_ui: Local<bool>,
-    keys: Res<Input<KeyCode>>,
+    keys: Res<Input<Key>>,
 ) {
     let (method, color_grading) = settings.single();
     let method = *method;
@@ -487,7 +487,7 @@ fn update_ui(
     let mut text = text.single_mut();
     let text = &mut text.sections[0].value;
 
-    if keys.just_pressed(KeyCode::KeyH) {
+    if keys.just_pressed(Key::Character("h".into())) {
         *hide_ui = !*hide_ui;
     }
     text.clear();

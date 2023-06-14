@@ -67,7 +67,7 @@ impl Plugin for SceneViewerPlugin {
                 (
                     update_lights,
                     camera_tracker,
-                    toggle_bounding_boxes.run_if(input_just_pressed(KeyCode::KeyB)),
+                    toggle_bounding_boxes.run_if(input_just_pressed(Key::Character("b".into()))),
                     #[cfg(feature = "animation")]
                     (start_animation, keyboard_animation_control),
                 ),
@@ -170,7 +170,7 @@ fn start_animation(
 
 #[cfg(feature = "animation")]
 fn keyboard_animation_control(
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<Input<Key>>,
     mut animation_player: Query<&mut AnimationPlayer>,
     scene_handle: Res<SceneHandle>,
     mut current_animation: Local<usize>,
@@ -181,7 +181,7 @@ fn keyboard_animation_control(
     }
 
     if let Ok(mut player) = animation_player.get_single_mut() {
-        if keyboard_input.just_pressed(KeyCode::Space) {
+        if keyboard_input.just_pressed(Key::Space) {
             if player.is_paused() {
                 player.resume();
             } else {
@@ -198,7 +198,7 @@ fn keyboard_animation_control(
             *changing = false;
         }
 
-        if keyboard_input.just_pressed(KeyCode::Enter) {
+        if keyboard_input.just_pressed(Key::Enter) {
             // delay the animation change for one frame
             *changing = true;
             // set the current animation to its start and pause it to reset to its starting state
@@ -208,18 +208,18 @@ fn keyboard_animation_control(
 }
 
 fn update_lights(
-    key_input: Res<Input<KeyCode>>,
+    key_input: Res<Input<Key>>,
     time: Res<Time>,
     mut query: Query<(&mut Transform, &mut DirectionalLight)>,
     mut animate_directional_light: Local<bool>,
 ) {
     for (_, mut light) in &mut query {
-        if key_input.just_pressed(KeyCode::KeyU) {
+        if key_input.just_pressed(Key::Character("u".into())) {
             light.shadows_enabled = !light.shadows_enabled;
         }
     }
 
-    if key_input.just_pressed(KeyCode::KeyL) {
+    if key_input.just_pressed(Key::Character("l".into())) {
         *animate_directional_light = !*animate_directional_light;
     }
     if *animate_directional_light {
@@ -265,7 +265,7 @@ impl CameraTracker {
 
 fn camera_tracker(
     mut camera_tracker: ResMut<CameraTracker>,
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<Input<Key>>,
     mut queries: ParamSet<(
         Query<(Entity, &mut Camera), (Added<Camera>, Without<CameraController>)>,
         Query<(Entity, &mut Camera), (Added<Camera>, With<CameraController>)>,
@@ -283,7 +283,7 @@ fn camera_tracker(
         camera.is_active = camera_tracker.track_camera(entity);
     }
 
-    if keyboard_input.just_pressed(KeyCode::KeyC) {
+    if keyboard_input.just_pressed(Key::Character("c".into())) {
         // disable currently active camera
         if let Some(e) = camera_tracker.active_camera() {
             if let Ok(mut camera) = queries.p2().get_mut(e) {

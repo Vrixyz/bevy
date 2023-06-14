@@ -35,11 +35,11 @@ fn update_speed(
 }
 
 fn pause(
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<Input<Key>>,
     audio_sinks: Res<Assets<AudioSink>>,
     music_controller: Res<MusicController>,
 ) {
-    if keyboard_input.just_pressed(KeyCode::Space) {
+    if keyboard_input.just_pressed(Key::Space) {
         if let Some(sink) = audio_sinks.get(&music_controller.0) {
             sink.toggle();
         }

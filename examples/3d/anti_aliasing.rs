@@ -29,7 +29,7 @@ fn main() {
 }
 
 fn modify_aa(
-    keys: Res<Input<KeyCode>>,
+    keys: Res<Input<Key>>,
     mut camera: Query<
         (
             Entity,
@@ -45,14 +45,14 @@ fn modify_aa(
     let mut camera = commands.entity(camera_entity);
 
     // No AA
-    if keys.just_pressed(KeyCode::Digit1) {
+    if keys.just_pressed(Key::Character("1".into())) {
         *msaa = Msaa::Off;
         camera.remove::<Fxaa>();
         camera.remove::<TemporalAntiAliasBundle>();
     }
 
     // MSAA
-    if keys.just_pressed(KeyCode::Digit2) && *msaa == Msaa::Off {
+    if keys.just_pressed(Key::Character("2".into())) && *msaa == Msaa::Off {
         camera.remove::<Fxaa>();
         camera.remove::<TemporalAntiAliasBundle>();
 
@@ -61,19 +61,19 @@ fn modify_aa(
 
     // MSAA Sample Count
     if *msaa != Msaa::Off {
-        if keys.just_pressed(KeyCode::KeyQ) {
+        if keys.just_pressed(Key::Character("q".into())) {
             *msaa = Msaa::Sample2;
         }
-        if keys.just_pressed(KeyCode::KeyW) {
+        if keys.just_pressed(Key::Character("w".into())) {
             *msaa = Msaa::Sample4;
         }
-        if keys.just_pressed(KeyCode::KeyE) {
+        if keys.just_pressed(Key::Character("e".into())) {
             *msaa = Msaa::Sample8;
         }
     }
 
     // FXAA
-    if keys.just_pressed(KeyCode::Digit3) && fxaa.is_none() {
+    if keys.just_pressed(Key::Character("3".into())) && fxaa.is_none() {
         *msaa = Msaa::Off;
         camera.remove::<TemporalAntiAliasBundle>();
 
@@ -82,30 +82,30 @@ fn modify_aa(
 
     // FXAA Settings
     if let Some(mut fxaa) = fxaa {
-        if keys.just_pressed(KeyCode::KeyQ) {
+        if keys.just_pressed(Key::Character("q".into())) {
             fxaa.edge_threshold = Sensitivity::Low;
             fxaa.edge_threshold_min = Sensitivity::Low;
         }
-        if keys.just_pressed(KeyCode::KeyW) {
+        if keys.just_pressed(Key::Character("w".into())) {
             fxaa.edge_threshold = Sensitivity::Medium;
             fxaa.edge_threshold_min = Sensitivity::Medium;
         }
-        if keys.just_pressed(KeyCode::KeyE) {
+        if keys.just_pressed(Key::Character("e".into())) {
             fxaa.edge_threshold = Sensitivity::High;
             fxaa.edge_threshold_min = Sensitivity::High;
         }
-        if keys.just_pressed(KeyCode::KeyR) {
+        if keys.just_pressed(Key::Character("r".into())) {
             fxaa.edge_threshold = Sensitivity::Ultra;
             fxaa.edge_threshold_min = Sensitivity::Ultra;
         }
-        if keys.just_pressed(KeyCode::KeyT) {
+        if keys.just_pressed(Key::Character("t".into())) {
             fxaa.edge_threshold = Sensitivity::Extreme;
             fxaa.edge_threshold_min = Sensitivity::Extreme;
         }
     }
 
     // TAA
-    if keys.just_pressed(KeyCode::Digit4) && taa.is_none() {
+    if keys.just_pressed(Key::Character("4".into())) && taa.is_none() {
         *msaa = Msaa::Off;
         camera.remove::<Fxaa>();
 
@@ -114,23 +114,23 @@ fn modify_aa(
 }
 
 fn modify_sharpening(
-    keys: Res<Input<KeyCode>>,
+    keys: Res<Input<Key>>,
     mut query: Query<&mut ContrastAdaptiveSharpeningSettings>,
 ) {
     for mut cas in &mut query {
-        if keys.just_pressed(KeyCode::Digit0) {
+        if keys.just_pressed(Key::Character("0".into())) {
             cas.enabled = !cas.enabled;
         }
         if cas.enabled {
-            if keys.just_pressed(KeyCode::Minus) {
+            if keys.just_pressed(Key::Character("-".into())) {
                 cas.sharpening_strength -= 0.1;
                 cas.sharpening_strength = cas.sharpening_strength.clamp(0.0, 1.0);
             }
-            if keys.just_pressed(KeyCode::Equal) {
+            if keys.just_pressed(Key::Character("+".into())) {
                 cas.sharpening_strength += 0.1;
                 cas.sharpening_strength = cas.sharpening_strength.clamp(0.0, 1.0);
             }
-            if keys.just_pressed(KeyCode::KeyD) {
+            if keys.just_pressed(Key::Character("d".into())) {
                 cas.denoise = !cas.denoise;
             }
         }

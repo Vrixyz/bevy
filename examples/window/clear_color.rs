@@ -17,8 +17,8 @@ fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 }
 
-fn change_clear_color(input: Res<Input<KeyCode>>, mut clear_color: ResMut<ClearColor>) {
-    if input.just_pressed(KeyCode::Space) {
+fn change_clear_color(input: Res<Input<Key>>, mut clear_color: ResMut<ClearColor>) {
+    if input.just_pressed(Key::Space) {
         clear_color.0 = Color::PURPLE;
     }
 }

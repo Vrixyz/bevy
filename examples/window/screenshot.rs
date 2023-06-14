@@ -13,12 +13,12 @@ fn main() {
 }
 
 fn screenshot_on_spacebar(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<Key>>,
     main_window: Query<Entity, With<PrimaryWindow>>,
     mut screenshot_manager: ResMut<ScreenshotManager>,
     mut counter: Local<u32>,
 ) {
-    if input.just_pressed(KeyCode::Space) {
+    if input.just_pressed(Key::Space) {
         let path = format!("./screenshot-{}.png", *counter);
         *counter += 1;
         screenshot_manager

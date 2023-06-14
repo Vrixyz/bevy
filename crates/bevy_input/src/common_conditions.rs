@@ -83,9 +83,9 @@ where
 /// ```
 pub fn input_just_pressed<T>(input: T) -> impl FnMut(Res<Input<T>>) -> bool + Clone
 where
-    T: Copy + Eq + Hash + Send + Sync + 'static,
+    T: Clone + Eq + Hash + Send + Sync + 'static,
 {
-    move |inputs: Res<Input<T>>| inputs.just_pressed(input)
+    move |inputs: Res<Input<T>>| inputs.just_pressed(input.clone())
 }
 
 /// Run condition that is active if [`Input::just_released`] is true for the given input.

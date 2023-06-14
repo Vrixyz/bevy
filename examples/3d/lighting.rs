@@ -261,22 +261,22 @@ fn animate_light_direction(
 }
 
 fn movement(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<Key>>,
     time: Res<Time>,
     mut query: Query<&mut Transform, With<Movable>>,
 ) {
     for mut transform in &mut query {
         let mut direction = Vec3::ZERO;
-        if input.pressed(KeyCode::ArrowUp) {
+        if input.pressed(Key::ArrowUp) {
             direction.y += 1.0;
         }
-        if input.pressed(KeyCode::ArrowDown) {
+        if input.pressed(Key::ArrowDown) {
             direction.y -= 1.0;
         }
-        if input.pressed(KeyCode::ArrowLeft) {
+        if input.pressed(Key::ArrowLeft) {
             direction.x -= 1.0;
         }
-        if input.pressed(KeyCode::ArrowRight) {
+        if input.pressed(Key::ArrowRight) {
             direction.x += 1.0;
         }
 
