@@ -1336,3 +1336,9 @@ pub enum Key {
     /// General-purpose function key.
     F35,
 }
+
+impl From<&str> for Key {
+    fn from(value: &str) -> Self {
+        Key::Character(value.into())
+    }
+}

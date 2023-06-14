@@ -352,11 +352,11 @@ fn toggle_scene(
     mut current_scene: ResMut<CurrentScene>,
 ) {
     let mut pressed = None;
-    if keys.just_pressed(Key::Character("q".into())) {
+    if keys.just_pressed("q") {
         pressed = Some(1);
-    } else if keys.just_pressed(Key::Character("w".into())) {
+    } else if keys.just_pressed("w") {
         pressed = Some(2);
-    } else if keys.just_pressed(Key::Character("e".into())) {
+    } else if keys.just_pressed("e") {
         pressed = Some(3);
     }
 
@@ -487,7 +487,7 @@ fn update_ui(
     let mut text = text.single_mut();
     let text = &mut text.sections[0].value;
 
-    if keys.just_pressed(Key::Character("h".into())) {
+    if keys.just_pressed("h") {
         *hide_ui = !*hide_ui;
     }
     text.clear();

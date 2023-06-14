@@ -45,14 +45,14 @@ fn modify_aa(
     let mut camera = commands.entity(camera_entity);
 
     // No AA
-    if keys.just_pressed(Key::Character("1".into())) {
+    if keys.just_pressed("1") {
         *msaa = Msaa::Off;
         camera.remove::<Fxaa>();
         camera.remove::<TemporalAntiAliasBundle>();
     }
 
     // MSAA
-    if keys.just_pressed(Key::Character("2".into())) && *msaa == Msaa::Off {
+    if keys.just_pressed("2") && *msaa == Msaa::Off {
         camera.remove::<Fxaa>();
         camera.remove::<TemporalAntiAliasBundle>();
 
@@ -61,19 +61,19 @@ fn modify_aa(
 
     // MSAA Sample Count
     if *msaa != Msaa::Off {
-        if keys.just_pressed(Key::Character("q".into())) {
+        if keys.just_pressed("q") {
             *msaa = Msaa::Sample2;
         }
-        if keys.just_pressed(Key::Character("w".into())) {
+        if keys.just_pressed("w") {
             *msaa = Msaa::Sample4;
         }
-        if keys.just_pressed(Key::Character("e".into())) {
+        if keys.just_pressed("e") {
             *msaa = Msaa::Sample8;
         }
     }
 
     // FXAA
-    if keys.just_pressed(Key::Character("3".into())) && fxaa.is_none() {
+    if keys.just_pressed("3") && fxaa.is_none() {
         *msaa = Msaa::Off;
         camera.remove::<TemporalAntiAliasBundle>();
 
@@ -82,30 +82,30 @@ fn modify_aa(
 
     // FXAA Settings
     if let Some(mut fxaa) = fxaa {
-        if keys.just_pressed(Key::Character("q".into())) {
+        if keys.just_pressed("q") {
             fxaa.edge_threshold = Sensitivity::Low;
             fxaa.edge_threshold_min = Sensitivity::Low;
         }
-        if keys.just_pressed(Key::Character("w".into())) {
+        if keys.just_pressed("w") {
             fxaa.edge_threshold = Sensitivity::Medium;
             fxaa.edge_threshold_min = Sensitivity::Medium;
         }
-        if keys.just_pressed(Key::Character("e".into())) {
+        if keys.just_pressed("e") {
             fxaa.edge_threshold = Sensitivity::High;
             fxaa.edge_threshold_min = Sensitivity::High;
         }
-        if keys.just_pressed(Key::Character("r".into())) {
+        if keys.just_pressed("r") {
             fxaa.edge_threshold = Sensitivity::Ultra;
             fxaa.edge_threshold_min = Sensitivity::Ultra;
         }
-        if keys.just_pressed(Key::Character("t".into())) {
+        if keys.just_pressed("t") {
             fxaa.edge_threshold = Sensitivity::Extreme;
             fxaa.edge_threshold_min = Sensitivity::Extreme;
         }
     }
 
     // TAA
-    if keys.just_pressed(Key::Character("4".into())) && taa.is_none() {
+    if keys.just_pressed("4") && taa.is_none() {
         *msaa = Msaa::Off;
         camera.remove::<Fxaa>();
 
@@ -118,19 +118,19 @@ fn modify_sharpening(
     mut query: Query<&mut ContrastAdaptiveSharpeningSettings>,
 ) {
     for mut cas in &mut query {
-        if keys.just_pressed(Key::Character("0".into())) {
+        if keys.just_pressed("0") {
             cas.enabled = !cas.enabled;
         }
         if cas.enabled {
-            if keys.just_pressed(Key::Character("-".into())) {
+            if keys.just_pressed("-") {
                 cas.sharpening_strength -= 0.1;
                 cas.sharpening_strength = cas.sharpening_strength.clamp(0.0, 1.0);
             }
-            if keys.just_pressed(Key::Character("+".into())) {
+            if keys.just_pressed("+") {
                 cas.sharpening_strength += 0.1;
                 cas.sharpening_strength = cas.sharpening_strength.clamp(0.0, 1.0);
             }
-            if keys.just_pressed(Key::Character("d".into())) {
+            if keys.just_pressed("d") {
                 cas.denoise = !cas.denoise;
             }
         }

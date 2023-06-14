@@ -105,10 +105,10 @@ fn rotate_camera(mut query: Query<&mut Transform, With<Camera>>, time: Res<Time>
 }
 
 fn update_config(mut config: ResMut<GizmoConfig>, keyboard: Res<Input<Key>>, time: Res<Time>) {
-    if keyboard.just_pressed(Key::Character("d".into())) {
+    if keyboard.just_pressed("d") {
         config.depth_bias = if config.depth_bias == 0. { -1. } else { 0. };
     }
-    if keyboard.just_pressed(Key::Character("p".into())) {
+    if keyboard.just_pressed("p") {
         // Toggle line_perspective
         config.line_perspective ^= true;
         // Increase the line width when line_perspective is on

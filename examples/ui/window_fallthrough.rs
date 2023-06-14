@@ -48,7 +48,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 // A simple system to handle some keyboard input and toggle on/off the hittest.
 fn toggle_mouse_passthrough(keyboard_input: Res<Input<Key>>, mut windows: Query<&mut Window>) {
-    if keyboard_input.just_pressed(Key::Character("p".into())) {
+    if keyboard_input.just_pressed("p") {
         let mut window = windows.single_mut();
         window.cursor.hit_test = !window.cursor.hit_test;
     }

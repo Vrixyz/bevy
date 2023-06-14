@@ -130,7 +130,7 @@ fn toggle_light(
     mut point_lights: Query<&mut PointLight>,
     mut directional_lights: Query<&mut DirectionalLight>,
 ) {
-    if input.just_pressed(Key::Character("l".into())) {
+    if input.just_pressed("l") {
         for mut light in &mut point_lights {
             light.intensity = if light.intensity == 0.0 {
                 println!("Using PointLight");
@@ -160,7 +160,7 @@ fn toggle_shadows(
         Query<Entity, (With<Handle<Mesh>>, Without<NotShadowReceiver>)>,
     )>,
 ) {
-    if input.just_pressed(Key::Character("c".into())) {
+    if input.just_pressed("c") {
         println!("Toggling casters");
         for entity in queries.p0().iter() {
             commands.entity(entity).remove::<NotShadowCaster>();
@@ -169,7 +169,7 @@ fn toggle_shadows(
             commands.entity(entity).insert(NotShadowCaster);
         }
     }
-    if input.just_pressed(Key::Character("r".into())) {
+    if input.just_pressed("r") {
         println!("Toggling receivers");
         for entity in queries.p1().iter() {
             commands.entity(entity).remove::<NotShadowReceiver>();

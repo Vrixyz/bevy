@@ -211,7 +211,7 @@ impl Default for CameraController {
             key_down: KeyCode::KeyQ,
             key_run: KeyCode::ShiftLeft,
             mouse_key_enable_mouse: MouseButton::Left,
-            keyboard_key_enable_mouse: Key::Character("m".into()),
+            keyboard_key_enable_mouse: "m".into(),
             walk_speed: 2.0,
             run_speed: 6.0,
             friction: 0.5,

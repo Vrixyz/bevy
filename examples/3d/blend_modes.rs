@@ -299,7 +299,7 @@ fn example_control_system(
         state.unlit = !state.unlit;
     }
 
-    let randomize_colors = input.just_pressed(Key::Character("c".into()));
+    let randomize_colors = input.just_pressed("c");
 
     for (material_handle, controls) in &controllable {
         let material = materials.get_mut(material_handle).unwrap();
@@ -317,7 +317,7 @@ fn example_control_system(
 
     let (mut camera, mut camera_transform, camera_global_transform) = camera.single_mut();
 
-    if input.just_pressed(Key::Character("h".into())) {
+    if input.just_pressed("h") {
         camera.hdr = !camera.hdr;
     }
 

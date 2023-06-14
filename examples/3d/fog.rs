@@ -185,7 +185,7 @@ fn update_system(
         .value
         .push_str("\n\n1 / 2 / 3 - Fog Falloff Mode");
 
-    if key.just_pressed(Key::Character("1".into())) {
+    if key.just_pressed("1") {
         if let FogFalloff::Linear { .. } = fog.falloff {
             // No change
         } else {
@@ -226,16 +226,16 @@ fn update_system(
             .value
             .push_str("\nA / S - Move Start Distance\nZ / X - Move End Distance");
 
-        if key.pressed(Key::Character("a".into())) {
+        if key.pressed("a") {
             *start -= delta * 3.0;
         }
-        if key.pressed(Key::Character("s".into())) {
+        if key.pressed("s") {
             *start += delta * 3.0;
         }
-        if key.pressed(Key::Character("z".into())) {
+        if key.pressed("z") {
             *end -= delta * 3.0;
         }
-        if key.pressed(Key::Character("x".into())) {
+        if key.pressed("x") {
             *end += delta * 3.0;
         }
     }
@@ -244,13 +244,13 @@ fn update_system(
     if let FogFalloff::Exponential { ref mut density } = &mut fog.falloff {
         text.sections[0].value.push_str("\nA / S - Change Density");
 
-        if key.pressed(Key::Character("a".into())) {
+        if key.pressed("a") {
             *density -= delta * 0.5 * *density;
             if *density < 0.0 {
                 *density = 0.0;
             }
         }
-        if key.pressed(Key::Character("s".into())) {
+        if key.pressed("s") {
             *density += delta * 0.5 * *density;
         }
     }
@@ -259,13 +259,13 @@ fn update_system(
     if let FogFalloff::ExponentialSquared { ref mut density } = &mut fog.falloff {
         text.sections[0].value.push_str("\nA / S - Change Density");
 
-        if key.pressed(Key::Character("a".into())) {
+        if key.pressed("a") {
             *density -= delta * 0.5 * *density;
             if *density < 0.0 {
                 *density = 0.0;
             }
         }
-        if key.pressed(Key::Character("s".into())) {
+        if key.pressed("s") {
             *density += delta * 0.5 * *density;
         }
     }
@@ -275,42 +275,42 @@ fn update_system(
         .value
         .push_str("\n\n- / = - Red\n[ / ] - Green\n; / ' - Blue\n. / ? - Alpha");
 
-    if key.pressed(Key::Character("-".into())) {
+    if key.pressed("-") {
         let r = (fog.color.r() - 0.1 * delta).max(0.0);
         fog.color.set_r(r);
     }
 
-    if key.pressed(Key::Character("=".into())) {
+    if key.pressed("=") {
         let r = (fog.color.r() + 0.1 * delta).min(1.0);
         fog.color.set_r(r);
     }
 
-    if key.pressed(Key::Character("[".into())) {
+    if key.pressed("[") {
         let g = (fog.color.g() - 0.1 * delta).max(0.0);
         fog.color.set_g(g);
     }
 
-    if key.pressed(Key::Character("]".into())) {
+    if key.pressed("]") {
         let g = (fog.color.g() + 0.1 * delta).min(1.0);
         fog.color.set_g(g);
     }
 
-    if key.pressed(Key::Character(";".into())) {
+    if key.pressed(";") {
         let b = (fog.color.b() - 0.1 * delta).max(0.0);
         fog.color.set_b(b);
     }
 
-    if key.pressed(Key::Character("'".into())) {
+    if key.pressed("'") {
         let b = (fog.color.b() + 0.1 * delta).min(1.0);
         fog.color.set_b(b);
     }
 
-    if key.pressed(Key::Character(".".into())) {
+    if key.pressed(".") {
         let a = (fog.color.a() - 0.1 * delta).max(0.0);
         fog.color.set_a(a);
     }
 
-    if key.pressed(Key::Character("?".into())) {
+    if key.pressed("?") {
         let a = (fog.color.a() + 0.1 * delta).min(1.0);
         fog.color.set_a(a);
     }

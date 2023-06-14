@@ -67,7 +67,7 @@ impl Plugin for SceneViewerPlugin {
                 (
                     update_lights,
                     camera_tracker,
-                    toggle_bounding_boxes.run_if(input_just_pressed(Key::Character("b".into()))),
+                    toggle_bounding_boxes.run_if(input_just_pressed("b")),
                     #[cfg(feature = "animation")]
                     (start_animation, keyboard_animation_control),
                 ),
@@ -214,12 +214,12 @@ fn update_lights(
     mut animate_directional_light: Local<bool>,
 ) {
     for (_, mut light) in &mut query {
-        if key_input.just_pressed(Key::Character("u".into())) {
+        if key_input.just_pressed("u") {
             light.shadows_enabled = !light.shadows_enabled;
         }
     }
 
-    if key_input.just_pressed(Key::Character("l".into())) {
+    if key_input.just_pressed("l") {
         *animate_directional_light = !*animate_directional_light;
     }
     if *animate_directional_light {
@@ -283,7 +283,7 @@ fn camera_tracker(
         camera.is_active = camera_tracker.track_camera(entity);
     }
 
-    if keyboard_input.just_pressed(Key::Character("c".into())) {
+    if keyboard_input.just_pressed("c") {
         // disable currently active camera
         if let Some(e) = camera_tracker.active_camera() {
             if let Ok(mut camera) = queries.p2().get_mut(e) {

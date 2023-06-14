@@ -14,7 +14,7 @@ fn keyboard_input_system(input: Res<Input<Key>>) {
     let shift = input.pressed(Key::Shift);
     let ctrl = input.pressed(Key::Control);
 
-    if ctrl && shift && input.just_pressed(Key::Character("a".into())) {
+    if ctrl && shift && input.just_pressed("a") {
         info!("Just pressed Ctrl + Shift + A!");
     }
 }

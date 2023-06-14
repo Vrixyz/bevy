@@ -268,7 +268,7 @@ fn update_transform<T: UpdateTransform + Component>(
 }
 
 fn toggle_overflow(keys: Res<Input<Key>>, mut containers: Query<&mut Style, With<Container>>) {
-    if keys.just_pressed(Key::Character("o".into())) {
+    if keys.just_pressed("o") {
         for mut style in &mut containers {
             style.overflow = match style.overflow {
                 Overflow {
@@ -290,7 +290,7 @@ fn toggle_overflow(keys: Res<Input<Key>>, mut containers: Query<&mut Style, With
 }
 
 fn next_container_size(keys: Res<Input<Key>>, mut containers: Query<(&mut Style, &mut Container)>) {
-    if keys.just_pressed(Key::Character("s".into())) {
+    if keys.just_pressed("s") {
         for (mut style, mut container) in &mut containers {
             container.0 = (container.0 + 1) % 3;
 

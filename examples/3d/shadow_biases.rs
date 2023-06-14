@@ -146,7 +146,7 @@ fn toggle_light(
     mut directional_lights: Query<&mut DirectionalLight>,
     mut example_text: Query<&mut Text>,
 ) {
-    if input.just_pressed(Key::Character("l".into())) {
+    if input.just_pressed("l") {
         for mut light in &mut point_lights {
             light.intensity = if light.intensity == 0.0 {
                 example_text.single_mut().sections[4].value = "PointLight".to_string();
