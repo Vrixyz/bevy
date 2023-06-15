@@ -22,4 +22,7 @@ fn keyboard_input_system(keyboard_input: Res<Input<Key>>) {
     if keyboard_input.just_released("a") {
         info!("'A' just released");
     }
+    if keyboard_input.pressed("A") {
+        info!("capital 'A' is being pressed");
+    }
 }
