@@ -35,7 +35,7 @@ fn update_speed(
 }
 
 fn pause(
-    keyboard_input: Res<Input<Key>>,
+    keyboard_input: Res<Input<KeyLogic>>,
     audio_sinks: Res<Assets<AudioSink>>,
     music_controller: Res<MusicController>,
 ) {

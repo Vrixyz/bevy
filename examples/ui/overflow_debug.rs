@@ -237,7 +237,11 @@ fn spawn_container(
         });
 }
 
-fn update_animation(mut animation: ResMut<AnimationState>, time: Res<Time>, keys: Res<Input<Key>>) {
+fn update_animation(
+    mut animation: ResMut<AnimationState>,
+    time: Res<Time>,
+    keys: Res<Input<KeyLogic>>,
+) {
     let time = time.elapsed_seconds();
 
     if keys.just_pressed(Key::Space) {
@@ -267,7 +271,7 @@ fn update_transform<T: UpdateTransform + Component>(
     }
 }
 
-fn toggle_overflow(keys: Res<Input<Key>>, mut containers: Query<&mut Style, With<Container>>) {
+fn toggle_overflow(keys: Res<Input<KeyLogic>>, mut containers: Query<&mut Style, With<Container>>) {
     if keys.just_pressed("o") {
         for mut style in &mut containers {
             style.overflow = match style.overflow {
@@ -289,7 +293,10 @@ fn toggle_overflow(keys: Res<Input<Key>>, mut containers: Query<&mut Style, With
     }
 }
 
-fn next_container_size(keys: Res<Input<Key>>, mut containers: Query<(&mut Style, &mut Container)>) {
+fn next_container_size(
+    keys: Res<Input<KeyLogic>>,
+    mut containers: Query<(&mut Style, &mut Container)>,
+) {
     if keys.just_pressed("s") {
         for (mut style, mut container) in &mut containers {
             container.0 = (container.0 + 1) % 3;

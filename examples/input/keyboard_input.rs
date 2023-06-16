@@ -10,19 +10,26 @@ fn main() {
 }
 
 /// This system prints 'A' key state
-fn keyboard_input_system(keyboard_input: Res<Input<Key>>) {
+fn keyboard_input_system(keyboard_input: Res<Input<KeyLogic>>) {
     if keyboard_input.pressed("a") {
-        info!("'A' currently pressed");
+        info!("'a' currently pressed");
     }
 
     if keyboard_input.just_pressed("a") {
-        info!("'A' just pressed");
+        info!("'a' just pressed");
     }
 
     if keyboard_input.just_released("a") {
-        info!("'A' just released");
+        info!("'a' just released");
     }
+
     if keyboard_input.pressed("A") {
-        info!("capital 'A' is being pressed");
+        info!("capital 'A' currently pressed");
+    }
+    if keyboard_input.just_pressed("A") {
+        info!("capital 'A' just pressed");
+    }
+    if keyboard_input.just_released("A") {
+        info!("capital 'A' just released");
     }
 }

@@ -39,7 +39,7 @@ struct Config {
     fancy: bool,
 }
 
-fn input(mut config: ResMut<Config>, input: Res<Input<Key>>) {
+fn input(mut config: ResMut<Config>, input: Res<Input<KeyLogic>>) {
     if input.just_pressed(Key::ArrowUp) {
         config.line_count += 10_000;
     }

@@ -41,7 +41,7 @@ fn main() {
 
 /// This system toggles the vsync mode when pressing the button V.
 /// You'll see fps increase displayed in the console.
-fn toggle_vsync(input: Res<Input<Key>>, mut windows: Query<&mut Window>) {
+fn toggle_vsync(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
     if input.just_pressed("v") {
         let mut window = windows.single_mut();
 
@@ -61,7 +61,7 @@ fn toggle_vsync(input: Res<Input<Key>>, mut windows: Query<&mut Window>) {
 /// This feature only works on some platforms. Please check the
 /// [documentation](https://docs.rs/bevy/latest/bevy/prelude/struct.Window.html#structfield.window_level)
 /// for more details.
-fn switch_level(input: Res<Input<Key>>, mut windows: Query<&mut Window>) {
+fn switch_level(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
     if input.just_pressed("t") {
         let mut window = windows.single_mut();
 
@@ -83,7 +83,7 @@ fn change_title(mut windows: Query<&mut Window>, time: Res<Time>) {
     );
 }
 
-fn toggle_cursor(mut windows: Query<&mut Window>, input: Res<Input<Key>>) {
+fn toggle_cursor(mut windows: Query<&mut Window>, input: Res<Input<KeyLogic>>) {
     if input.just_pressed(Key::Space) {
         let mut window = windows.single_mut();
 
@@ -96,7 +96,7 @@ fn toggle_cursor(mut windows: Query<&mut Window>, input: Res<Input<Key>>) {
 }
 
 // This system will toggle the color theme used by the window
-fn toggle_theme(mut windows: Query<&mut Window>, input: Res<Input<Key>>) {
+fn toggle_theme(mut windows: Query<&mut Window>, input: Res<Input<KeyLogic>>) {
     if input.just_pressed("f") {
         let mut window = windows.single_mut();
 

@@ -10,7 +10,7 @@ fn main() {
 }
 
 /// This system prints when `Ctrl + Shift + A` is pressed
-fn keyboard_input_system(input: Res<Input<Key>>) {
+fn keyboard_input_system(input: Res<Input<KeyLogic>>) {
     let shift = input.pressed(Key::Shift);
     let ctrl = input.pressed(Key::Control);
 

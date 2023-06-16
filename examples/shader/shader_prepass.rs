@@ -225,7 +225,7 @@ impl Material for PrepassOutputMaterial {
 /// Every time you press space, it will cycle between transparent, depth and normals view
 fn toggle_prepass_view(
     mut prepass_view: Local<u32>,
-    key: Res<Input<Key>>,
+    key: Res<Input<KeyLogic>>,
     material_handle: Query<&Handle<PrepassOutputMaterial>>,
     mut materials: ResMut<Assets<PrepassOutputMaterial>>,
     mut text: Query<&mut Text>,

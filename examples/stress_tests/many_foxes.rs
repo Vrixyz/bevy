@@ -226,7 +226,7 @@ fn update_fox_rings(
 }
 
 fn keyboard_animation_control(
-    keyboard_input: Res<Input<Key>>,
+    keyboard_input: Res<Input<KeyLogic>>,
     mut animation_player: Query<&mut AnimationPlayer>,
     animations: Res<Animations>,
     mut current_animation: Local<usize>,

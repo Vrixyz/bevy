@@ -14,7 +14,7 @@ fn main() {
 fn grab_mouse(
     mut windows: Query<&mut Window>,
     mouse: Res<Input<MouseButton>>,
-    key: Res<Input<Key>>,
+    key: Res<Input<KeyLogic>>,
 ) {
     let mut window = windows.single_mut();
 

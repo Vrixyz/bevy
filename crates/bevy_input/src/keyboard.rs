@@ -38,6 +38,42 @@ pub struct KeyboardInput {
     pub state: ButtonState,
 }
 
+/// The stored logical key code for `Res<Input<KeyLogic>>`
+///
+/// We need to store the corresponding `KeyCode` because when modifiers are applied,
+/// the released logical key might be different from the pressed.
+/// For example, the sequence of physical keys:
+/// - Press shift
+/// - Press 'a'
+/// - Release shift
+/// - Release 'a',
+///
+/// Leads to the following underlying logical events:
+/// - Press shift
+/// - Press logic character key 'A'
+/// - Release shift
+/// - Release logic character key 'a'
+/// Note the different capitalization.
+#[derive(Debug, Clone, Eq, PartialEq, Hash, Reflect, FromReflect)]
+#[cfg_attr(
+    feature = "serialize",
+    derive(serde::Serialize, serde::Deserialize),
+    reflect(Serialize, Deserialize)
+)]
+pub enum KeyLogic {
+    Logic(Key),
+    Physical(KeyCode),
+}
+
+impl<I> From<I> for KeyLogic
+where
+    I: Into<Key>,
+{
+    fn from(value: I) -> Self {
+        KeyLogic::Logic(value.into())
+    }
+}
+
 /// Updates the [`Input<KeyCode>`] resource with the latest [`KeyboardInput`] events.
 ///
 /// ## Differences
@@ -45,7 +81,7 @@ pub struct KeyboardInput {
 /// The main difference between the [`KeyboardInput`] event and the [`Input<KeyCode>`] or [`Input<ScanCode>`] resources is that
 /// the latter have convenient functions such as [`Input::pressed`], [`Input::just_pressed`] and [`Input::just_released`].
 pub fn keyboard_input_system(
-    mut logical_key_input: ResMut<Input<Key>>,
+    mut logical_key_input: ResMut<Input<KeyLogic>>,
     mut key_input: ResMut<Input<KeyCode>>,
     mut keyboard_input_events: EventReader<KeyboardInput>,
 ) {
@@ -63,9 +99,13 @@ pub fn keyboard_input_system(
             ButtonState::Pressed => key_input.press(*key_code),
             ButtonState::Released => key_input.release(*key_code),
         }
+        let logic = KeyLogic::Logic(logical_key.clone());
         match state {
-            ButtonState::Pressed => logical_key_input.press(logical_key.clone()),
-            ButtonState::Released => logical_key_input.release(logical_key.clone()),
+            ButtonState::Pressed => {
+                logical_key_input.add_dynamic_mapping(logic.clone(), KeyLogic::Physical(*key_code));
+                logical_key_input.press(KeyLogic::Physical(*key_code));
+            }
+            ButtonState::Released => logical_key_input.release(KeyLogic::Physical(*key_code)),
         }
     }
 }
@@ -599,7 +639,9 @@ pub enum NativeKey {
 ///
 /// ## Usage
 ///
-/// It is used as the generic `T` value of an [`Input`](crate::Input) to create a `Res<Input<Key>>`.
+/// It is used as the generic `T` value of an [`Input`](crate::Input) to create a `Res<Input<KeyLogic>>`,
+/// storing a `Key` and its corresponding `KeyCode`.
+///
 /// The resource values are mapped to the current layout of the keyboard and correlate to a [`KeyCode`](KeyCode).
 ///
 /// ## Updating

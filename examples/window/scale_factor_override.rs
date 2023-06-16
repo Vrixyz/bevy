@@ -76,7 +76,7 @@ fn display_override(mut windows: Query<&mut Window>) {
 }
 
 /// This system toggles scale factor overrides when enter is pressed
-fn toggle_override(input: Res<Input<Key>>, mut windows: Query<&mut Window>) {
+fn toggle_override(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
     let mut window = windows.single_mut();
 
     if input.just_pressed(Key::Enter) {
@@ -88,7 +88,7 @@ fn toggle_override(input: Res<Input<Key>>, mut windows: Query<&mut Window>) {
 }
 
 /// This system changes the scale factor override when up or down is pressed
-fn change_scale_factor(input: Res<Input<Key>>, mut windows: Query<&mut Window>) {
+fn change_scale_factor(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
     let mut window = windows.single_mut();
     let scale_factor_override = window.resolution.scale_factor_override();
     if input.just_pressed(Key::ArrowUp) {

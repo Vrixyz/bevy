@@ -126,7 +126,7 @@ fn setup(
 }
 
 fn toggle_light(
-    input: Res<Input<Key>>,
+    input: Res<Input<KeyLogic>>,
     mut point_lights: Query<&mut PointLight>,
     mut directional_lights: Query<&mut DirectionalLight>,
 ) {
@@ -152,7 +152,7 @@ fn toggle_light(
 
 fn toggle_shadows(
     mut commands: Commands,
-    input: Res<Input<Key>>,
+    input: Res<Input<KeyLogic>>,
     mut queries: ParamSet<(
         Query<Entity, (With<Handle<Mesh>>, With<NotShadowCaster>)>,
         Query<Entity, (With<Handle<Mesh>>, With<NotShadowReceiver>)>,

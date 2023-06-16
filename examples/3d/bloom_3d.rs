@@ -116,7 +116,7 @@ fn update_bloom_settings(
     mut camera: Query<(Entity, Option<&mut BloomSettings>), With<Camera>>,
     mut text: Query<&mut Text>,
     mut commands: Commands,
-    key: Res<Input<Key>>,
+    key: Res<Input<KeyLogic>>,
     time: Res<Time>,
 ) {
     let bloom_settings = camera.single_mut();

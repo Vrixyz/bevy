@@ -141,7 +141,7 @@ fn setup(
 }
 
 fn toggle_light(
-    input: Res<Input<Key>>,
+    input: Res<Input<KeyLogic>>,
     mut point_lights: Query<&mut PointLight>,
     mut directional_lights: Query<&mut DirectionalLight>,
     mut example_text: Query<&mut Text>,

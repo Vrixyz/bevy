@@ -170,7 +170,7 @@ fn start_animation(
 
 #[cfg(feature = "animation")]
 fn keyboard_animation_control(
-    keyboard_input: Res<Input<Key>>,
+    keyboard_input: Res<Input<KeyLogic>>,
     mut animation_player: Query<&mut AnimationPlayer>,
     scene_handle: Res<SceneHandle>,
     mut current_animation: Local<usize>,
@@ -208,7 +208,7 @@ fn keyboard_animation_control(
 }
 
 fn update_lights(
-    key_input: Res<Input<Key>>,
+    key_input: Res<Input<KeyLogic>>,
     time: Res<Time>,
     mut query: Query<(&mut Transform, &mut DirectionalLight)>,
     mut animate_directional_light: Local<bool>,
@@ -265,7 +265,7 @@ impl CameraTracker {
 
 fn camera_tracker(
     mut camera_tracker: ResMut<CameraTracker>,
-    keyboard_input: Res<Input<Key>>,
+    keyboard_input: Res<Input<KeyLogic>>,
     mut queries: ParamSet<(
         Query<(Entity, &mut Camera), (Added<Camera>, Without<CameraController>)>,
         Query<(Entity, &mut Camera), (Added<Camera>, With<CameraController>)>,

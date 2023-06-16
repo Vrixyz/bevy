@@ -450,7 +450,8 @@ pub fn winit_runner(mut app: App) {
                     }
                     WindowEvent::KeyboardInput { ref event, .. } => {
                         let keyboard_event = converters::convert_keyboard_input(event);
-                        if let bevy_input::keyboard::Key::Character(c) = &keyboard_event.logical_key
+                        if let bevy_input::keyboard::Key::Character(c) =
+                            converters::convert_logical_key_code(&event.logical_key)
                         {
                             if let Some(first_char) = c.chars().next() {
                                 input_events.character_input.send(ReceivedCharacter {

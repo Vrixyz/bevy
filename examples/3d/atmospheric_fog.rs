@@ -110,7 +110,7 @@ fn setup_instructions(mut commands: Commands) {
     }),));
 }
 
-fn toggle_system(key: Res<Input<Key>>, mut fog: Query<&mut FogSettings>) {
+fn toggle_system(key: Res<Input<KeyLogic>>, mut fog: Query<&mut FogSettings>) {
     let mut fog_settings = fog.single_mut();
 
     if key.just_pressed(Key::Space) {

@@ -287,7 +287,7 @@ fn example_control_system(
     labelled: Query<&GlobalTransform>,
     mut state: Local<ExampleState>,
     time: Res<Time>,
-    input: Res<Input<Key>>,
+    input: Res<Input<KeyLogic>>,
 ) {
     if input.pressed(Key::ArrowUp) {
         state.alpha = (state.alpha + time.delta_seconds()).min(1.0);
