@@ -1,5 +1,5 @@
 use bevy_ecs::system::Resource;
-use bevy_reflect::{std_traits::ReflectDefault, Reflect};
+use bevy_reflect::{std_traits::ReflectDefault, FromReflect, Reflect, ReflectFromReflect};
 use bevy_utils::{HashMap, HashSet};
 use std::hash::Hash;
 
@@ -41,9 +41,9 @@ use bevy_ecs::schedule::State;
 ///
 ///[`ResMut`]: bevy_ecs::system::ResMut
 ///[`DetectChangesMut::bypass_change_detection`]: bevy_ecs::change_detection::DetectChangesMut::bypass_change_detection
-#[derive(Debug, Clone, Resource, Reflect)]
-#[reflect(Default)]
-pub struct Input<T: Clone + Eq + Hash + Send + Sync + 'static> {
+#[derive(Debug, Clone, Resource, Reflect, FromReflect)]
+#[reflect(Default, FromReflect)]
+pub struct Input<T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static> {
     /// A collection of every button that is currently being pressed.
     pressed: HashSet<T>,
     /// A collection of every button that has just been pressed.
@@ -54,7 +54,7 @@ pub struct Input<T: Clone + Eq + Hash + Send + Sync + 'static> {
     dynamic_map_value: HashMap<T, T>,
 }
 
-impl<T: Clone + Eq + Hash + Send + Sync + 'static> Default for Input<T> {
+impl<T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static> Default for Input<T> {
     fn default() -> Self {
         Self {
             pressed: Default::default(),
@@ -67,7 +67,7 @@ impl<T: Clone + Eq + Hash + Send + Sync + 'static> Default for Input<T> {
 
 impl<T> Input<T>
 where
-    T: Clone + Eq + Hash + Send + Sync + 'static,
+    T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static,
 {
     pub fn add_dynamic_mapping<I: Into<T>>(&mut self, user_visible: I, stored: I) {
         self.dynamic_map_value

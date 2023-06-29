@@ -16,6 +16,7 @@
 //!
 //! See the documentation on [`Gizmos`](crate::gizmos::Gizmos) for more examples.
 
+use std::hash::{Hash, Hasher};
 use std::mem;
 
 use bevy_app::{Last, Plugin, Update};
@@ -52,6 +53,7 @@ use bevy_render::{
     Extract, ExtractSchedule, Render, RenderApp, RenderSet,
 };
 use bevy_transform::components::{GlobalTransform, Transform};
+use bevy_utils::AHasher;
 
 pub mod gizmos;
 
@@ -78,9 +80,9 @@ impl Plugin for GizmoPlugin {
     fn build(&self, app: &mut bevy_app::App) {
         load_internal_asset!(app, LINE_SHADER_HANDLE, "lines.wgsl", Shader::from_wgsl);
 
-        app.add_plugin(UniformComponentPlugin::<LineGizmoUniform>::default())
+        app.add_plugins(UniformComponentPlugin::<LineGizmoUniform>::default())
             .add_asset::<LineGizmo>()
-            .add_plugin(RenderAssetPlugin::<LineGizmo>::default())
+            .add_plugins(RenderAssetPlugin::<LineGizmo>::default())
             .init_resource::<LineGizmoHandles>()
             .init_resource::<GizmoConfig>()
             .init_resource::<GizmoStorage>()
@@ -100,9 +102,9 @@ impl Plugin for GizmoPlugin {
             .add_systems(Render, queue_line_gizmo_bind_group.in_set(RenderSet::Queue));
 
         #[cfg(feature = "bevy_sprite")]
-        app.add_plugin(pipeline_2d::LineGizmo2dPlugin);
+        app.add_plugins(pipeline_2d::LineGizmo2dPlugin);
         #[cfg(feature = "bevy_pbr")]
-        app.add_plugin(pipeline_3d::LineGizmo3dPlugin);
+        app.add_plugins(pipeline_3d::LineGizmo3dPlugin);
     }
 
     fn finish(&self, app: &mut bevy_app::App) {
@@ -229,7 +231,12 @@ fn draw_all_aabbs(
 }
 
 fn color_from_entity(entity: Entity) -> Color {
-    let hue = entity.to_bits() as f32 * 100_000. % 360.;
+    const U64_TO_DEGREES: f32 = 360.0 / u64::MAX as f32;
+
+    let mut hasher = AHasher::default();
+    entity.hash(&mut hasher);
+
+    let hue = hasher.finish() as f32 * U64_TO_DEGREES;
     Color::hsl(hue, 1., 0.5)
 }
 
@@ -452,12 +459,22 @@ impl<P: PhaseItem> RenderCommand<P> for DrawLineGizmo {
             return RenderCommandResult::Failure;
         };
 
-        pass.set_vertex_buffer(0, line_gizmo.position_buffer.slice(..));
-        pass.set_vertex_buffer(1, line_gizmo.color_buffer.slice(..));
-
         let instances = if line_gizmo.strip {
+            let item_size = VertexFormat::Float32x3.size();
+            let buffer_size = line_gizmo.position_buffer.size() - item_size;
+            pass.set_vertex_buffer(0, line_gizmo.position_buffer.slice(..buffer_size));
+            pass.set_vertex_buffer(1, line_gizmo.position_buffer.slice(item_size..));
+
+            let item_size = VertexFormat::Float32x4.size();
+            let buffer_size = line_gizmo.color_buffer.size() - item_size;
+            pass.set_vertex_buffer(2, line_gizmo.color_buffer.slice(..buffer_size));
+            pass.set_vertex_buffer(3, line_gizmo.color_buffer.slice(item_size..));
+
             u32::max(line_gizmo.vertex_count, 1) - 1
         } else {
+            pass.set_vertex_buffer(0, line_gizmo.position_buffer.slice(..));
+            pass.set_vertex_buffer(1, line_gizmo.color_buffer.slice(..));
+
             line_gizmo.vertex_count / 2
         };
 
@@ -468,42 +485,55 @@ impl<P: PhaseItem> RenderCommand<P> for DrawLineGizmo {
 }
 
 fn line_gizmo_vertex_buffer_layouts(strip: bool) -> Vec<VertexBufferLayout> {
-    let stride_multiplier = if strip { 1 } else { 2 };
     use VertexFormat::*;
-    vec![
-        // Positions
-        VertexBufferLayout {
-            array_stride: Float32x3.size() * stride_multiplier,
-            step_mode: VertexStepMode::Instance,
-            attributes: vec![
-                VertexAttribute {
-                    format: Float32x3,
-                    offset: 0,
-                    shader_location: 0,
-                },
-                VertexAttribute {
-                    format: Float32x3,
-                    offset: Float32x3.size(),
-                    shader_location: 1,
-                },
-            ],
-        },
-        // Colors
-        VertexBufferLayout {
-            array_stride: Float32x4.size() * stride_multiplier,
-            step_mode: VertexStepMode::Instance,
-            attributes: vec![
-                VertexAttribute {
-                    format: Float32x4,
-                    offset: 0,
-                    shader_location: 2,
-                },
-                VertexAttribute {
-                    format: Float32x4,
-                    offset: Float32x4.size(),
-                    shader_location: 3,
-                },
-            ],
-        },
-    ]
+    let mut position_layout = VertexBufferLayout {
+        array_stride: Float32x3.size(),
+        step_mode: VertexStepMode::Instance,
+        attributes: vec![VertexAttribute {
+            format: Float32x3,
+            offset: 0,
+            shader_location: 0,
+        }],
+    };
+
+    let mut color_layout = VertexBufferLayout {
+        array_stride: Float32x4.size(),
+        step_mode: VertexStepMode::Instance,
+        attributes: vec![VertexAttribute {
+            format: Float32x4,
+            offset: 0,
+            shader_location: 2,
+        }],
+    };
+
+    if strip {
+        vec![
+            position_layout.clone(),
+            {
+                position_layout.attributes[0].shader_location = 1;
+                position_layout
+            },
+            color_layout.clone(),
+            {
+                color_layout.attributes[0].shader_location = 3;
+                color_layout
+            },
+        ]
+    } else {
+        position_layout.array_stride *= 2;
+        position_layout.attributes.push(VertexAttribute {
+            format: Float32x3,
+            offset: Float32x3.size(),
+            shader_location: 1,
+        });
+
+        color_layout.array_stride *= 2;
+        color_layout.attributes.push(VertexAttribute {
+            format: Float32x4,
+            offset: Float32x4.size(),
+            shader_location: 3,
+        });
+
+        vec![position_layout, color_layout]
+    }
 }
