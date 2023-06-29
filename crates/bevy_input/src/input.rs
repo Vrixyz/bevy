@@ -205,12 +205,13 @@ where
 
 #[cfg(test)]
 mod test {
-    use bevy_reflect::TypePath;
+    use bevy_reflect::{FromReflect, Reflect};
 
     use crate::Input;
 
     /// Used for testing the functionality of [`Input`].
-    #[derive(TypePath, Copy, Clone, Eq, PartialEq, Hash)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Reflect, FromReflect)]
+    #[reflect_value]
     enum DummyInput {
         Input1,
         Input2,
