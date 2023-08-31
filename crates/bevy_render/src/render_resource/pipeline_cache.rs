@@ -304,6 +304,7 @@ impl ShaderCache {
 
                         let shader_defs = shader_defs
                             .into_iter()
+                            .chain(shader.shader_defs.iter().cloned())
                             .map(|def| match def {
                                 ShaderDefVal::Bool(k, v) => {
                                     (k, naga_oil::compose::ShaderDefValue::Bool(v))
@@ -831,7 +832,7 @@ impl PipelineCache {
         shaders: Extract<Res<Assets<Shader>>>,
         mut events: Extract<EventReader<AssetEvent<Shader>>>,
     ) {
-        for event in events.iter() {
+        for event in events.read() {
             match event {
                 AssetEvent::Created { handle } | AssetEvent::Modified { handle } => {
                     if let Some(shader) = shaders.get(handle) {

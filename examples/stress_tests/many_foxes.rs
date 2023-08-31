@@ -269,14 +269,14 @@ fn keyboard_animation_control(
             player.set_speed(speed * 0.8);
         }
 
-        if keyboard_input.just_pressed(Key::ArrowLeft) {
-            let elapsed = player.elapsed();
-            player.set_elapsed(elapsed - 0.1);
+        if keyboard_input.just_pressed(KeyCode::ArrowLeft) {
+            let elapsed = player.seek_time();
+            player.seek_to(elapsed - 0.1);
         }
 
-        if keyboard_input.just_pressed(Key::ArrowRight) {
-            let elapsed = player.elapsed();
-            player.set_elapsed(elapsed + 0.1);
+        if keyboard_input.just_pressed(KeyCode::ArrowRight) {
+            let elapsed = player.seek_time();
+            player.seek_to(elapsed + 0.1);
         }
 
         if keyboard_input.just_pressed(Key::Enter) {

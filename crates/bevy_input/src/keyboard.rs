@@ -1,3 +1,5 @@
+//! The keyboard input functionality.
+
 use crate::{ButtonState, Input};
 use bevy_ecs::entity::Entity;
 use bevy_ecs::{
@@ -55,7 +57,7 @@ pub fn keyboard_input_system(
     // Avoid clearing if it's not empty to ensure change detection is not triggered.
     logical_key_input.bypass_change_detection().clear();
     key_input.bypass_change_detection().clear();
-    for event in keyboard_input_events.iter() {
+    for event in keyboard_input_events.read() {
         let KeyboardInput {
             key_code,
             logical_key,
