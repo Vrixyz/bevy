@@ -1,3 +1,5 @@
+//! The generic input type.
+
 use bevy_ecs::system::Resource;
 
 use bevy_reflect::{std_traits::ReflectDefault, FromReflect, Reflect};
