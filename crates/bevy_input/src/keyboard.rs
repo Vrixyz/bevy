@@ -133,6 +133,7 @@ pub fn keyboard_input_system(
     reflect(Serialize, Deserialize)
 )]
 pub enum NativeKeyCode {
+    /// Unidentified
     Unidentified,
     /// An Android "scancode".
     Android(u32),
@@ -406,6 +407,7 @@ pub enum KeyCode {
     NumpadDecimal,
     /// <kbd>/</kbd>
     NumpadDivide,
+    /// The Enter key on the numpad.
     NumpadEnter,
     /// <kbd>=</kbd>
     NumpadEqual,
@@ -458,13 +460,17 @@ pub enum KeyCode {
     ///
     /// This also the "back" button (triangle) on Android.
     BrowserBack,
+    /// BrowserFavorites
     BrowserFavorites,
     /// Some laptops place this key to the right of the <kbd>↑</kbd> key.
     BrowserForward,
     /// The "home" button on Android.
     BrowserHome,
+    /// BrowserRefresh
     BrowserRefresh,
+    /// BrowserSearch
     BrowserSearch,
+    /// BrowserStop
     BrowserStop,
     /// <kbd>Eject</kbd> or <kbd>⏏</kbd>. This key is placed in the function section on some Apple
     /// keyboards.
@@ -473,27 +479,42 @@ pub enum KeyCode {
     LaunchApp1,
     /// Sometimes labelled <kbd>Calculator</kbd> on the keyboard
     LaunchApp2,
+    /// LaunchMail
     LaunchMail,
+    /// MediaPlayPause
     MediaPlayPause,
+    /// MediaSelect
     MediaSelect,
+    /// MediaStop
     MediaStop,
+    /// MediaTrackNext
     MediaTrackNext,
+    /// MediaTrackPrevious
     MediaTrackPrevious,
     /// This key is placed in the function section on some Apple keyboards, replacing the
     /// <kbd>Eject</kbd> key.
     Power,
+    /// Sleep
     Sleep,
+    /// AudioVolumeDown
     AudioVolumeDown,
+    /// AudioVolumeMute
     AudioVolumeMute,
+    /// AudioVolumeUp
     AudioVolumeUp,
+    /// WakeUp
     WakeUp,
-    // Legacy modifier key. Also called "Super" in certain places.
+    /// Legacy modifier key. Also called "Super" in certain places.
     Meta,
-    // Legacy modifier key.
+    /// Legacy modifier key.
     Hyper,
+    /// Turbo
     Turbo,
+    /// Abort
     Abort,
+    /// Resume
     Resume,
+    /// Suspend
     Suspend,
     /// Found on Sun’s USB keyboard.
     Again,
@@ -626,6 +647,7 @@ pub enum KeyCode {
 #[derive(Debug, Clone, Ord, PartialOrd, PartialEq, Eq, Hash, Reflect)]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 pub enum NativeKey {
+    /// Unidentified
     Unidentified,
     /// An Android "keycode", which is similar to a "virtual-key code" on Windows.
     Android(u32),
@@ -720,10 +742,11 @@ pub enum Key {
     Shift,
     /// The Symbol modifier key (used on some virtual keyboards).
     Symbol,
+    /// The SymbolLock key, only on web.
     SymbolLock,
-    // Legacy modifier key. Also called "Super" in certain places.
+    /// Legacy modifier key. Also called "Super" in certain places.
     Meta,
-    // Legacy modifier key.
+    /// Legacy modifier key.
     Hyper,
     /// Used to enable "super" modifier function for interpreting concurrent or subsequent keyboard
     /// input. This key value is used for the "Windows Logo" key and the Apple `Command` or `⌘` key.
@@ -791,6 +814,7 @@ pub enum Key {
     Again,
     /// The Attention (Attn) key.
     Attn,
+    /// The Cancel key. (on linux and web)
     Cancel,
     /// Show the application’s context menu.
     /// This key is commonly found between the right `Super` key and the right `Control` key.
@@ -799,6 +823,7 @@ pub enum Key {
     /// now more generally used to exit or "escape" the current context, such as closing a dialog
     /// or exiting full screen mode.
     Escape,
+    /// The Execute key.
     Execute,
     /// Open the Find dialog. (`APPCOMMAND_FIND`)
     Find,
@@ -817,6 +842,7 @@ pub enum Key {
     Play,
     /// The properties (Props) key.
     Props,
+    /// The Select key.
     Select,
     /// The ZoomIn key. (`KEYCODE_ZOOM_IN`)
     ZoomIn,
@@ -829,6 +855,7 @@ pub enum Key {
     BrightnessUp,
     /// Toggle removable media to eject (open) and insert (close) state. (`KEYCODE_MEDIA_EJECT`)
     Eject,
+    /// LogOff
     LogOff,
     /// Toggle power state. (`KEYCODE_POWER`)
     /// Note: Note: Some devices might not expose this key to the operating environment.
@@ -848,6 +875,7 @@ pub enum Key {
     WakeUp,
     /// Initate the multi-candidate mode.
     AllCandidates,
+    /// The Alphanumeric key (on linux/web)
     Alphanumeric,
     /// Initiate the Code Input mode to allow characters to be entered by
     /// their code points.
@@ -870,16 +898,22 @@ pub enum Key {
     GroupPrevious,
     /// Toggle between or cycle through input modes of IMEs.
     ModeChange,
+    /// NextCandidate, web only.
     NextCandidate,
     /// Accept current input method sequence without
     /// conversion in IMEs.
     NonConvert,
+    /// PreviousCandidate, web only.
     PreviousCandidate,
+    /// IME PROCESS key
     Process,
+    /// SingleCandidate
     SingleCandidate,
     /// Toggle between Hangul and English modes.
     HangulMode,
+    /// HanjaMode
     HanjaMode,
+    /// JunjaMode
     JunjaMode,
     /// The Eisu key. This key may close the IME, but its purpose is defined by the current IME.
     /// (`KEYCODE_EISU`)
@@ -1031,12 +1065,19 @@ pub enum Key {
     LaunchMail,
     /// The "Media Player" key. (`APPCOMMAND_LAUNCH_MEDIA_SELECT`)
     LaunchMediaPlayer,
+    /// LaunchMusicPlayer
     LaunchMusicPlayer,
+    /// LaunchPhone
     LaunchPhone,
+    /// LaunchScreenSaver
     LaunchScreenSaver,
+    /// LaunchSpreadsheet
     LaunchSpreadsheet,
+    /// LaunchWebBrowser
     LaunchWebBrowser,
+    /// LaunchWebCam
     LaunchWebCam,
+    /// LaunchWordProcessor
     LaunchWordProcessor,
     /// Navigate to previous content or page in current history. (`APPCOMMAND_BROWSER_BACKWARD`)
     BrowserBack,
@@ -1069,11 +1110,13 @@ pub enum Key {
     GoHome,
     /// The Headset Hook key. (`KEYCODE_HEADSETHOOK`)
     HeadsetHook,
+    /// LastNumberRedial
     LastNumberRedial,
     /// The Notification key. (`KEYCODE_NOTIFICATION`)
     Notification,
     /// Toggle between manner mode state: silent, vibrate, ring, ... (`KEYCODE_MANNER_MODE`)
     MannerMode,
+    /// VoiceDial
     VoiceDial,
     /// Switch to viewing TV. (`KEYCODE_TV`)
     TV,
