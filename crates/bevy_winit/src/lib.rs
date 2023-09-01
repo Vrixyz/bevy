@@ -333,8 +333,6 @@ pub fn winit_runner(mut app: App) {
         .remove_non_send_resource::<EventLoop<()>>()
         .unwrap();
 
-    let return_from_run = app.world.resource::<WinitSettings>().return_from_run;
-
     app.world
         .insert_non_send_resource(event_loop.create_proxy());
 
@@ -589,14 +587,20 @@ pub fn winit_runner(mut app: App) {
                         window.resolution.set_scale_factor(scale_factor);
                         let new_factor = window.resolution.scale_factor();
 
+                        let mut new_inner_size = winit::dpi::PhysicalSize::new(
+                            window.physical_width(),
+                            window.physical_height(),
+                        );
                         if let Some(forced_factor) = window.resolution.scale_factor_override() {
                             // This window is overriding the OS-suggested DPI, so its physical size
                             // should be set based on the overriding value. Its logical size already
                             // incorporates any resize constraints.
-                            inner_size_writer.request_inner_size(
+                            let maybe_new_inner_size =
                                 winit::dpi::LogicalSize::new(window.width(), window.height())
-                                    .to_physical::<u32>(forced_factor),
-                            );
+                                    .to_physical::<u32>(forced_factor);
+                            if inner_size_writer.request_inner_size(new_inner_size).is_ok() {
+                                new_inner_size = maybe_new_inner_size;
+                            }
                         } else if approx::relative_ne!(new_factor, prior_factor) {
                             event_writers.window_scale_factor_changed.send(
                                 WindowScaleFactorChanged {
@@ -606,20 +610,9 @@ pub fn winit_runner(mut app: App) {
                             );
                         }
 
-                        // TODO: ThierryBerger: this is wrong, but I'm not sure how to get the new window size yet.
-                        let new_logical_width = (window.resolution.width()
-                            / window.scale_factor() as f32)
-                            * window.resolution.width() as f32;
-                        let new_logical_height = (window.resolution.height()
-                            / window.scale_factor() as f32)
-                            * window.resolution.height() as f32;
-                        //
+                        let new_logical_width = (new_inner_size.width as f64 / new_factor) as f32;
+                        let new_logical_height = (new_inner_size.height as f64 / new_factor) as f32;
 
-                        /*
-                        let new_logical_width =
-                            (inner_size_writer.width as f64 / new_factor) as f32;
-                        let new_logical_height =
-                            (inner_size_writer.height as f64 / new_factor) as f32;*/
                         if approx::relative_ne!(window.width(), new_logical_width)
                             || approx::relative_ne!(window.height(), new_logical_height)
                         {
@@ -629,15 +622,9 @@ pub fn winit_runner(mut app: App) {
                                 height: new_logical_height,
                             });
                         }
-                        // TODO: ThierryBerger: most likely wrong..
-                        window.resolution.set_physical_resolution(
-                            new_logical_width as u32,
-                            new_logical_height as u32,
-                        );
-
-                        /* window
-                        .resolution
-                        .set_physical_resolution(new_inner_size.width, new_inner_size.height);*/
+                        window
+                            .resolution
+                            .set_physical_resolution(new_inner_size.width, new_inner_size.height);
                     }
                     WindowEvent::Focused(focused) => {
                         window.focused = focused;
@@ -845,9 +832,5 @@ pub fn winit_runner(mut app: App) {
     };
 
     trace!("starting winit event loop");
-    if return_from_run {
-        run_ondemand(&mut event_loop, event_handler);
-    } else {
-        run(event_loop, event_handler);
-    }
+    run(event_loop, event_handler);
 }
