@@ -261,7 +261,7 @@ pub fn camera_controller(
         if key_input.pressed(options.key_down) {
             axis_input.y -= 1.0;
         }
-        if key_input_logic.just_pressed(options.keyboard_key_enable_mouse.clone()) {
+        if key_input_logic.just_pressed(options.keyboard_key_enable_mouse) {
             *move_toggled = !*move_toggled;
         }
 
