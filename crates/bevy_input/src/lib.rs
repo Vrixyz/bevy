@@ -116,6 +116,7 @@ impl Plugin for InputPlugin {
 
         // Register keyboard types
         app.register_type::<KeyboardInput>()
+            .register_type::<KeyLogic>()
             .register_type::<KeyCode>()
             .register_type::<Key>()
             .register_type::<NativeKey>();
