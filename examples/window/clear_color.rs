@@ -18,7 +18,7 @@ fn setup(mut commands: Commands) {
 }
 
 fn change_clear_color(input: Res<Input<KeyLogic>>, mut clear_color: ResMut<ClearColor>) {
-    if input.just_pressed(Key::Space) {
+    if input.just_pressed(KeyCode::Space) {
         clear_color.0 = Color::PURPLE;
     }
 }

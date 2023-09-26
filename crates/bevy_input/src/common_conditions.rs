@@ -38,7 +38,7 @@ use std::hash::Hash;
 ///         .run();
 /// }
 ///
-/// fn update_pause_state(mut paused: ResMut<Paused>, input: Input<KeyCode>) {
+/// fn update_pause_state(mut paused: ResMut<Paused>, input: Input<KeyLogic>) {
 ///   if input.just_pressed(KeyCode::Escape) {
 ///     paused.0 = !paused.0;
 ///   }

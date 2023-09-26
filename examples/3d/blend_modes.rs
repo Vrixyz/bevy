@@ -292,17 +292,17 @@ fn example_control_system(
     time: Res<Time>,
     input: Res<Input<KeyLogic>>,
 ) {
-    if input.pressed(Key::ArrowUp) {
+    if input.pressed(KeyCode::ArrowUp) {
         state.alpha = (state.alpha + time.delta_seconds()).min(1.0);
-    } else if input.pressed(Key::ArrowDown) {
+    } else if input.pressed(KeyCode::ArrowDown) {
         state.alpha = (state.alpha - time.delta_seconds()).max(0.0);
     }
 
-    if input.just_pressed(Key::Space) {
+    if input.just_pressed(KeyCode::Space) {
         state.unlit = !state.unlit;
     }
 
-    let randomize_colors = input.just_pressed("c");
+    let randomize_colors = input.just_pressed(KeyCode::KeyC);
 
     for (material_handle, controls) in &controllable {
         let material = materials.get_mut(material_handle).unwrap();
@@ -320,13 +320,13 @@ fn example_control_system(
 
     let (mut camera, mut camera_transform, camera_global_transform) = camera.single_mut();
 
-    if input.just_pressed("h") {
+    if input.just_pressed(KeyCode::KeyH) {
         camera.hdr = !camera.hdr;
     }
 
-    let rotation = if input.pressed(Key::ArrowLeft) {
+    let rotation = if input.pressed(KeyCode::ArrowLeft) {
         time.delta_seconds()
-    } else if input.pressed(Key::ArrowRight) {
+    } else if input.pressed(KeyCode::ArrowRight) {
         -time.delta_seconds()
     } else {
         0.0

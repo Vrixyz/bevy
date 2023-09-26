@@ -59,7 +59,7 @@ fn setup_ui(mut cmd: Commands) {
 
 /// This system shows how to request the window to a new resolution
 fn toggle_resolution(
-    keys: Res<Input<KeyCode>>,
+    keys: Res<Input<KeyLogic>>,
     mut windows: Query<&mut Window>,
     resolution: Res<ResolutionSettings>,
 ) {

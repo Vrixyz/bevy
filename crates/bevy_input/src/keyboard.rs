@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 /// ## Usage
 ///
 /// The event is consumed inside of the [`keyboard_input_system`](crate::keyboard::keyboard_input_system)
-/// to update the [`Input<KeyCode>`](crate::Input<KeyCode>) resource.
+/// to update the [`Input<KLogic>`](crate::Input<KeyLogic>) resource.
 #[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
@@ -66,7 +66,9 @@ pub struct KeyboardInput {
     reflect(Serialize, Deserialize)
 )]
 pub enum KeyLogic {
+    /// Represents the logical key, typically what's visible on the keyboard.
     Logic(Key),
+    /// Represents the ScanCode
     Physical(KeyCode),
 }
 
@@ -79,19 +81,23 @@ where
     }
 }
 
-/// Updates the [`Input<KeyCode>`] resource with the latest [`KeyboardInput`] events.
+impl From<KeyCode> for KeyLogic {
+    fn from(value: KeyCode) -> Self {
+        KeyLogic::Physical(value)
+    }
+}
+
+/// Updates the [`Input<KeyLogic>`] resource with the latest [`KeyboardInput`] events.
 ///
 /// ## Differences
 ///
-/// The main difference between the [`KeyboardInput`] event and the [`Input<KeyCode>`] or [`Input<ScanCode>`] resources is that
+/// The main difference between the [`KeyboardInput`] event and the [`Input<KeyLogic>`] resources is that
 /// the latter have convenient functions such as [`Input::pressed`], [`Input::just_pressed`] and [`Input::just_released`].
 pub fn keyboard_input_system(
-    mut logical_key_input: ResMut<Input<KeyLogic>>,
-    mut key_input: ResMut<Input<KeyCode>>,
+    mut key_input: ResMut<Input<KeyLogic>>,
     mut keyboard_input_events: EventReader<KeyboardInput>,
 ) {
     // Avoid clearing if it's not empty to ensure change detection is not triggered.
-    logical_key_input.bypass_change_detection().clear();
     key_input.bypass_change_detection().clear();
     for event in keyboard_input_events.read() {
         let KeyboardInput {
@@ -101,16 +107,11 @@ pub fn keyboard_input_system(
             ..
         } = event;
         match state {
-            ButtonState::Pressed => key_input.press(*key_code),
-            ButtonState::Released => key_input.release(*key_code),
-        }
-        let logic = KeyLogic::Logic(logical_key.clone());
-        match state {
             ButtonState::Pressed => {
-                logical_key_input.add_dynamic_mapping(logic.clone(), KeyLogic::Physical(*key_code));
-                logical_key_input.press(KeyLogic::Physical(*key_code));
+                key_input.add_dynamic_mapping(logical_key.clone(), *key_code);
+                key_input.press(*key_code);
             }
-            ButtonState::Released => logical_key_input.release(KeyLogic::Physical(*key_code)),
+            ButtonState::Released => key_input.release(*key_code),
         }
     }
 }

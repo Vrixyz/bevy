@@ -146,7 +146,7 @@ fn toggle_light(
     mut directional_lights: Query<&mut DirectionalLight>,
     mut example_text: Query<&mut Text>,
 ) {
-    if input.just_pressed("l") {
+    if input.just_pressed(KeyCode::KeyL) {
         for mut light in &mut point_lights {
             light.intensity = if light.intensity == 0.0 {
                 example_text.single_mut().sections[4].value = "PointLight".to_string();
@@ -167,7 +167,7 @@ fn toggle_light(
 }
 
 fn adjust_point_light_biases(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<KeyLogic>>,
     mut query: Query<&mut PointLight>,
     mut example_text: Query<&mut Text>,
 ) {
@@ -196,7 +196,7 @@ fn adjust_point_light_biases(
 }
 
 fn adjust_directional_light_biases(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<KeyLogic>>,
     mut query: Query<&mut DirectionalLight>,
     mut example_text: Query<&mut Text>,
 ) {
@@ -270,7 +270,7 @@ impl Default for CameraController {
 fn camera_controller(
     time: Res<Time>,
     mut mouse_events: EventReader<MouseMotion>,
-    key_input: Res<Input<KeyCode>>,
+    key_input: Res<Input<KeyLogic>>,
     mut query: Query<(&mut Transform, &mut CameraController), With<Camera>>,
 ) {
     let dt = time.delta_seconds();

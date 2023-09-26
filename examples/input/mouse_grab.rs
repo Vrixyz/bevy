@@ -23,7 +23,7 @@ fn grab_mouse(
         window.cursor.grab_mode = CursorGrabMode::Locked;
     }
 
-    if key.just_pressed(Key::Escape) {
+    if key.just_pressed(KeyCode::Escape) {
         window.cursor.visible = true;
         window.cursor.grab_mode = CursorGrabMode::None;
     }

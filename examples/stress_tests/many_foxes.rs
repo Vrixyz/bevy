@@ -234,24 +234,24 @@ fn keyboard_animation_control(
     mut current_animation: Local<usize>,
     mut foxes: ResMut<Foxes>,
 ) {
-    if keyboard_input.just_pressed(Key::Space) {
+    if keyboard_input.just_pressed(KeyCode::Space) {
         foxes.moving = !foxes.moving;
     }
 
-    if keyboard_input.just_pressed(Key::ArrowUp) {
+    if keyboard_input.just_pressed(KeyCode::ArrowUp) {
         foxes.speed *= 1.25;
     }
 
-    if keyboard_input.just_pressed(Key::ArrowDown) {
+    if keyboard_input.just_pressed(KeyCode::ArrowDown) {
         foxes.speed *= 0.8;
     }
 
-    if keyboard_input.just_pressed(Key::Enter) {
+    if keyboard_input.just_pressed(KeyCode::Enter) {
         *current_animation = (*current_animation + 1) % animations.0.len();
     }
 
     for mut player in &mut animation_player {
-        if keyboard_input.just_pressed(Key::Space) {
+        if keyboard_input.just_pressed(KeyCode::Space) {
             if player.is_paused() {
                 player.resume();
             } else {
@@ -259,12 +259,12 @@ fn keyboard_animation_control(
             }
         }
 
-        if keyboard_input.just_pressed(Key::ArrowUp) {
+        if keyboard_input.just_pressed(KeyCode::ArrowUp) {
             let speed = player.speed();
             player.set_speed(speed * 1.25);
         }
 
-        if keyboard_input.just_pressed(Key::ArrowDown) {
+        if keyboard_input.just_pressed(KeyCode::ArrowDown) {
             let speed = player.speed();
             player.set_speed(speed * 0.8);
         }
@@ -279,7 +279,7 @@ fn keyboard_animation_control(
             player.seek_to(elapsed + 0.1);
         }
 
-        if keyboard_input.just_pressed(Key::Enter) {
+        if keyboard_input.just_pressed(KeyCode::Enter) {
             player
                 .play_with_transition(
                     animations.0[*current_animation].clone_weak(),

@@ -72,10 +72,14 @@ impl<T> Input<T>
 where
     T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static,
 {
-    pub fn add_dynamic_mapping<I: Into<T>>(&mut self, user_visible: I, stored: I) {
+    /// When user adds modifiers to a keypress, the underlying Logical key might change.<br />
+    /// Use this to store a reference to the original LogicalKey.
+    pub fn add_dynamic_mapping<V: Into<T>, S: Into<T>>(&mut self, user_visible: V, stored: S) {
         self.dynamic_map_value
             .insert(user_visible.into(), stored.into());
     }
+
+    /// To call when a dynamic key mapping is not longer needed.
     pub fn release_dynamic_mapping<I: Into<T>>(&mut self, key: I) {
         let to_remove = key.into();
         self.dynamic_map_value

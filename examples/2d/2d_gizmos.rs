@@ -55,7 +55,7 @@ fn system(mut gizmos: Gizmos, time: Res<Time>) {
     gizmos.arc_2d(Vec2::ZERO, sin / 10., PI / 2., 350., Color::ORANGE_RED);
 }
 
-fn update_config(mut config: ResMut<GizmoConfig>, keyboard: Res<Input<KeyCode>>, time: Res<Time>) {
+fn update_config(mut config: ResMut<GizmoConfig>, keyboard: Res<Input<KeyLogic>>, time: Res<Time>) {
     if keyboard.pressed(KeyCode::ArrowRight) {
         config.line_width += 5. * time.delta_seconds();
     }

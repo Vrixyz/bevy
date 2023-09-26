@@ -105,20 +105,20 @@ fn rotate_camera(mut query: Query<&mut Transform, With<Camera>>, time: Res<Time>
 }
 
 fn update_config(mut config: ResMut<GizmoConfig>, keyboard: Res<Input<KeyLogic>>, time: Res<Time>) {
-    if keyboard.just_pressed("d") {
+    if keyboard.just_pressed(KeyCode::KeyD) {
         config.depth_bias = if config.depth_bias == 0. { -1. } else { 0. };
     }
-    if keyboard.just_pressed("p") {
+    if keyboard.just_pressed(KeyCode::KeyP) {
         // Toggle line_perspective
         config.line_perspective ^= true;
         // Increase the line width when line_perspective is on
         config.line_width *= if config.line_perspective { 5. } else { 1. / 5. };
     }
 
-    if keyboard.pressed(Key::ArrowRight) {
+    if keyboard.pressed(KeyCode::ArrowRight) {
         config.line_width += 5. * time.delta_seconds();
     }
-    if keyboard.pressed(Key::ArrowLeft) {
+    if keyboard.pressed(KeyCode::ArrowLeft) {
         config.line_width -= 5. * time.delta_seconds();
     }
 }

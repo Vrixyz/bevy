@@ -75,7 +75,7 @@ fn transition_to_in_game_system(
     mut next_state: ResMut<NextState<AppState>>,
     keyboard_input: Res<Input<KeyLogic>>,
 ) {
-    if keyboard_input.pressed(Key::Space) {
+    if keyboard_input.pressed(KeyCode::Space) {
         next_state.set(AppState::InGame);
     }
 }

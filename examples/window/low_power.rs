@@ -100,7 +100,7 @@ pub(crate) mod test_setup {
         mut mode: ResMut<ExampleMode>,
         mouse_button_input: Res<Input<KeyLogic>>,
     ) {
-        if mouse_button_input.just_pressed(Key::Space) {
+        if mouse_button_input.just_pressed(KeyCode::Space) {
             *mode = match *mode {
                 ExampleMode::Game => ExampleMode::Application,
                 ExampleMode::Application => ExampleMode::ApplicationWithRedraw,

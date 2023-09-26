@@ -9,27 +9,27 @@ fn main() {
         .run();
 }
 
-/// This system prints 'A' key state
+/// This system prints 'A' character key state
 fn keyboard_input_system(keyboard_input: Res<Input<KeyLogic>>) {
     if keyboard_input.pressed("a") {
-        info!("'a' currently pressed");
+        info!("Character lowercase 'a' currently pressed");
     }
 
     if keyboard_input.just_pressed("a") {
-        info!("'a' just pressed");
+        info!("Character lowercase 'a' just pressed");
     }
 
     if keyboard_input.just_released("a") {
-        info!("'a' just released");
+        info!("Character lowercase 'a' just released");
     }
 
     if keyboard_input.pressed("A") {
-        info!("capital 'A' currently pressed");
+        info!("Character uppercase 'A' currently pressed");
     }
     if keyboard_input.just_pressed("A") {
-        info!("capital 'A' just pressed");
+        info!("Character uppercase 'A' just pressed");
     }
     if keyboard_input.just_released("A") {
-        info!("capital 'A' just released");
+        info!("Character uppercase 'A' just released");
     }
 }

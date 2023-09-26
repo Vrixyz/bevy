@@ -79,7 +79,7 @@ impl CurrentMethod {
 }
 
 fn update_parallax_depth_scale(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<KeyLogic>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut target_depth: Local<TargetDepth>,
     mut depth_update: Local<bool>,
@@ -111,7 +111,7 @@ fn update_parallax_depth_scale(
 }
 
 fn switch_method(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<KeyLogic>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut text: Query<&mut Text>,
     mut current: Local<CurrentMethod>,
@@ -130,7 +130,7 @@ fn switch_method(
 }
 
 fn update_parallax_layers(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<KeyLogic>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut target_layers: Local<TargetLayers>,
     mut text: Query<&mut Text>,

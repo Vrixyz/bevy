@@ -98,7 +98,7 @@ fn keyboard_animation_control(
     mut current_animation: Local<usize>,
 ) {
     for mut player in &mut animation_players {
-        if keyboard_input.just_pressed(Key::Space) {
+        if keyboard_input.just_pressed(KeyCode::Space) {
             if player.is_paused() {
                 player.resume();
             } else {
@@ -106,12 +106,12 @@ fn keyboard_animation_control(
             }
         }
 
-        if keyboard_input.just_pressed(Key::ArrowUp) {
+        if keyboard_input.just_pressed(KeyCode::ArrowUp) {
             let speed = player.speed();
             player.set_speed(speed * 1.2);
         }
 
-        if keyboard_input.just_pressed(Key::ArrowDown) {
+        if keyboard_input.just_pressed(KeyCode::ArrowDown) {
             let speed = player.speed();
             player.set_speed(speed * 0.8);
         }
@@ -126,7 +126,7 @@ fn keyboard_animation_control(
             player.seek_to(elapsed + 0.1);
         }
 
-        if keyboard_input.just_pressed(Key::Enter) {
+        if keyboard_input.just_pressed(KeyCode::Enter) {
             *current_animation = (*current_animation + 1) % animations.0.len();
             player
                 .play_with_transition(
@@ -136,22 +136,22 @@ fn keyboard_animation_control(
                 .repeat();
         }
 
-        if keyboard_input.just_pressed(KeyCode::Key1) {
+        if keyboard_input.just_pressed(KeyCode::Digit1) {
             player.set_repeat(RepeatAnimation::Count(1));
             player.replay();
         }
 
-        if keyboard_input.just_pressed(KeyCode::Key3) {
+        if keyboard_input.just_pressed(KeyCode::Digit3) {
             player.set_repeat(RepeatAnimation::Count(3));
             player.replay();
         }
 
-        if keyboard_input.just_pressed(KeyCode::Key5) {
+        if keyboard_input.just_pressed(KeyCode::Digit5) {
             player.set_repeat(RepeatAnimation::Count(5));
             player.replay();
         }
 
-        if keyboard_input.just_pressed(KeyCode::L) {
+        if keyboard_input.just_pressed(KeyCode::KeyL) {
             player.set_repeat(RepeatAnimation::Forever);
         }
     }

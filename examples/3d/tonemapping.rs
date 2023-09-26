@@ -354,11 +354,11 @@ fn toggle_scene(
     mut current_scene: ResMut<CurrentScene>,
 ) {
     let mut pressed = None;
-    if keys.just_pressed("q") {
+    if keys.just_pressed(KeyCode::KeyQ) {
         pressed = Some(1);
-    } else if keys.just_pressed("w") {
+    } else if keys.just_pressed(KeyCode::KeyW) {
         pressed = Some(2);
-    } else if keys.just_pressed("e") {
+    } else if keys.just_pressed(KeyCode::KeyE) {
         pressed = Some(3);
     }
 
@@ -376,7 +376,7 @@ fn toggle_scene(
 }
 
 fn toggle_tonemapping_method(
-    keys: Res<Input<KeyCode>>,
+    keys: Res<Input<KeyLogic>>,
     mut tonemapping: Query<&mut Tonemapping>,
     mut color_grading: Query<&mut ColorGrading>,
     per_method_settings: Res<PerMethodSettings>,
@@ -434,17 +434,17 @@ fn update_color_grading_settings(
     let method = tonemapping.single();
     let color_grading = per_method_settings.settings.get_mut(method).unwrap();
     let mut dt = time.delta_seconds() * 0.25;
-    if keys.pressed(Key::ArrowLeft) {
+    if keys.pressed(KeyCode::ArrowLeft) {
         dt = -dt;
     }
 
-    if keys.just_pressed(Key::ArrowDown) {
+    if keys.just_pressed(KeyCode::ArrowDown) {
         selected_parameter.next();
     }
-    if keys.just_pressed(Key::ArrowUp) {
+    if keys.just_pressed(KeyCode::ArrowUp) {
         selected_parameter.prev();
     }
-    if keys.pressed(Key::ArrowLeft) || keys.pressed(Key::ArrowRight) {
+    if keys.pressed(KeyCode::ArrowLeft) || keys.pressed(KeyCode::ArrowRight) {
         match selected_parameter.value {
             0 => {
                 color_grading.exposure += dt;
@@ -462,13 +462,13 @@ fn update_color_grading_settings(
         }
     }
 
-    if keys.just_pressed(Key::Space) {
+    if keys.just_pressed(KeyCode::Space) {
         for (_, grading) in per_method_settings.settings.iter_mut() {
             *grading = ColorGrading::default();
         }
     }
 
-    if keys.just_pressed(Key::Enter) && current_scene.0 == 1 {
+    if keys.just_pressed(KeyCode::Enter) && current_scene.0 == 1 {
         for (mapper, grading) in per_method_settings.settings.iter_mut() {
             *grading = PerMethodSettings::basic_scene_recommendation(*mapper);
         }
@@ -489,7 +489,7 @@ fn update_ui(
     let mut text = text.single_mut();
     let text = &mut text.sections[0].value;
 
-    if keys.just_pressed("h") {
+    if keys.just_pressed(KeyCode::KeyH) {
         *hide_ui = !*hide_ui;
     }
     text.clear();

@@ -230,7 +230,7 @@ fn toggle_prepass_view(
     mut materials: ResMut<Assets<PrepassOutputMaterial>>,
     mut text: Query<&mut Text>,
 ) {
-    if key.just_pressed(Key::Space) {
+    if key.just_pressed(KeyCode::Space) {
         *prepass_view = (*prepass_view + 1) % 4;
 
         let label = match *prepass_view {

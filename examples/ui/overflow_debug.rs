@@ -243,7 +243,7 @@ fn update_animation(
 ) {
     let time = time.elapsed_seconds();
 
-    if keys.just_pressed(Key::Space) {
+    if keys.just_pressed(KeyCode::Space) {
         animation.playing = !animation.playing;
 
         if !animation.playing {
@@ -271,7 +271,7 @@ fn update_transform<T: UpdateTransform + Component>(
 }
 
 fn toggle_overflow(keys: Res<Input<KeyLogic>>, mut containers: Query<&mut Style, With<Container>>) {
-    if keys.just_pressed("o") {
+    if keys.just_pressed(KeyCode::KeyO) {
         for mut style in &mut containers {
             style.overflow = match style.overflow {
                 Overflow {
@@ -296,7 +296,7 @@ fn next_container_size(
     keys: Res<Input<KeyLogic>>,
     mut containers: Query<(&mut Style, &mut Container)>,
 ) {
-    if keys.just_pressed("s") {
+    if keys.just_pressed(KeyCode::KeyS) {
         for (mut style, mut container) in &mut containers {
             container.0 = (container.0 + 1) % 3;
 

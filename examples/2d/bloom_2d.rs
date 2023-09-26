@@ -131,65 +131,65 @@ fn update_bloom_settings(
                 bloom_settings.prefilter_settings.threshold_softness
             ));
 
-            if key.just_pressed(Key::Space) {
+            if key.just_pressed(KeyCode::Space) {
                 commands.entity(entity).remove::<BloomSettings>();
             }
 
             let dt = time.delta_seconds();
 
-            if key.pressed("a") {
+            if key.pressed(KeyCode::KeyA) {
                 bloom_settings.intensity -= dt / 10.0;
             }
-            if key.pressed("q") {
+            if key.pressed(KeyCode::KeyQ) {
                 bloom_settings.intensity += dt / 10.0;
             }
             bloom_settings.intensity = bloom_settings.intensity.clamp(0.0, 1.0);
 
-            if key.pressed("s") {
+            if key.pressed(KeyCode::KeyS) {
                 bloom_settings.low_frequency_boost -= dt / 10.0;
             }
-            if key.pressed("w") {
+            if key.pressed(KeyCode::KeyW) {
                 bloom_settings.low_frequency_boost += dt / 10.0;
             }
             bloom_settings.low_frequency_boost = bloom_settings.low_frequency_boost.clamp(0.0, 1.0);
 
-            if key.pressed("d") {
+            if key.pressed(KeyCode::KeyD) {
                 bloom_settings.low_frequency_boost_curvature -= dt / 10.0;
             }
-            if key.pressed("e") {
+            if key.pressed(KeyCode::KeyE) {
                 bloom_settings.low_frequency_boost_curvature += dt / 10.0;
             }
             bloom_settings.low_frequency_boost_curvature =
                 bloom_settings.low_frequency_boost_curvature.clamp(0.0, 1.0);
 
-            if key.pressed("f") {
+            if key.pressed(KeyCode::KeyF) {
                 bloom_settings.high_pass_frequency -= dt / 10.0;
             }
-            if key.pressed("r") {
+            if key.pressed(KeyCode::KeyR) {
                 bloom_settings.high_pass_frequency += dt / 10.0;
             }
             bloom_settings.high_pass_frequency = bloom_settings.high_pass_frequency.clamp(0.0, 1.0);
 
-            if key.pressed("g") {
+            if key.pressed(KeyCode::KeyG) {
                 bloom_settings.composite_mode = BloomCompositeMode::Additive;
             }
-            if key.pressed("t") {
+            if key.pressed(KeyCode::KeyT) {
                 bloom_settings.composite_mode = BloomCompositeMode::EnergyConserving;
             }
 
-            if key.pressed("h") {
+            if key.pressed(KeyCode::KeyH) {
                 bloom_settings.prefilter_settings.threshold -= dt;
             }
-            if key.pressed("y") {
+            if key.pressed(KeyCode::KeyY) {
                 bloom_settings.prefilter_settings.threshold += dt;
             }
             bloom_settings.prefilter_settings.threshold =
                 bloom_settings.prefilter_settings.threshold.max(0.0);
 
-            if key.pressed("j") {
+            if key.pressed(KeyCode::KeyJ) {
                 bloom_settings.prefilter_settings.threshold_softness -= dt / 10.0;
             }
-            if key.pressed("u") {
+            if key.pressed(KeyCode::KeyU) {
                 bloom_settings.prefilter_settings.threshold_softness += dt / 10.0;
             }
             bloom_settings.prefilter_settings.threshold_softness = bloom_settings

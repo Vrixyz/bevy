@@ -68,8 +68,8 @@ fn has_user_input(
     mouse_button_input: Res<Input<MouseButton>>,
     touch_input: Res<Touches>,
 ) -> bool {
-    keyboard_input.just_pressed(Key::Space)
-        || keyboard_input.just_pressed(Key::Enter)
+    keyboard_input.just_pressed(KeyCode::Space)
+        || keyboard_input.just_pressed(KeyCode::Enter)
         || mouse_button_input.just_pressed(MouseButton::Left)
         || mouse_button_input.just_pressed(MouseButton::Right)
         || touch_input.any_just_pressed()

@@ -77,7 +77,7 @@ fn setup(
 
 fn increment_atlas_index(
     mut atlas_images: Query<&mut UiTextureAtlasImage>,
-    keyboard: Res<Input<KeyCode>>,
+    keyboard: Res<Input<KeyLogic>>,
 ) {
     if keyboard.just_pressed(KeyCode::Space) {
         for mut atlas_image in &mut atlas_images {

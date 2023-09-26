@@ -503,7 +503,6 @@ pub fn winit_runner(mut app: App) {
                             converters::convert_logical_key_code(&event.logical_key)
                         {
                             if let Some(first_char) = c.chars().next() {
-                                dbg!(&first_char);
                                 event_writers.character_input.send(ReceivedCharacter {
                                     window: window_entity,
                                     char: first_char,
