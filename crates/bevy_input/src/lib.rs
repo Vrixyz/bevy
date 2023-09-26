@@ -70,7 +70,6 @@ impl Plugin for InputPlugin {
         app
             // keyboard
             .add_event::<KeyboardInput>()
-            .init_resource::<Input<KeyCode>>()
             .init_resource::<Input<KeyLogic>>()
             .add_systems(PreUpdate, keyboard_input_system.in_set(InputSystem))
             // mouse
