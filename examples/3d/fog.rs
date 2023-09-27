@@ -184,7 +184,7 @@ fn update_system(
         .value
         .push_str("\n\n1 / 2 / 3 - Fog Falloff Mode");
 
-    if keycode.just_pressed(KeyCode::Digit1) {
+    if keycode.pressed(KeyCode::Digit1) {
         if let FogFalloff::Linear { .. } = fog.falloff {
             // No change
         } else {
@@ -279,7 +279,7 @@ fn update_system(
         fog.color.set_r(r);
     }
 
-    if keycode.pressed(KeyCode::Equal) {
+    if keycode.any_pressed([KeyCode::Equal, KeyCode::NumpadEqual]) {
         let r = (fog.color.r() + 0.1 * delta).min(1.0);
         fog.color.set_r(r);
     }
