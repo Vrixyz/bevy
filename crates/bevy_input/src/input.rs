@@ -73,7 +73,7 @@ where
     T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static,
 {
     /// When user adds modifiers to a keypress, the underlying Logical key might change.<br />
-    /// Use this to store a reference to the original LogicalKey.
+    /// Use this to store a reference to the original `LogicalKey`.
     pub fn add_dynamic_mapping<V: Into<T>, S: Into<T>>(&mut self, user_visible: V, stored: S) {
         self.dynamic_map_value
             .insert(user_visible.into(), stored.into());
@@ -212,12 +212,12 @@ where
 
 #[cfg(test)]
 mod test {
-    use bevy_reflect::{FromReflect, Reflect};
+    use bevy_reflect::Reflect;
 
     use crate::Input;
 
     /// Used for testing the functionality of [`Input`].
-    #[derive(Copy, Clone, Eq, PartialEq, Hash, Reflect, FromReflect)]
+    #[derive(Copy, Clone, Eq, PartialEq, Hash, Reflect)]
     #[reflect_value]
     enum DummyInput {
         Input1,
