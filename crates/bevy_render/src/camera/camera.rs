@@ -27,7 +27,7 @@ use bevy_window::{
     NormalizedWindowRef, PrimaryWindow, Window, WindowCreated, WindowRef, WindowResized,
 };
 use std::{borrow::Cow, ops::Range};
-use wgpu::{BlendState, Extent3d, LoadOp, TextureFormat};
+use wgpu::{BlendState, LoadOp, TextureFormat};
 
 /// Render viewport configuration for the [`Camera`] component.
 ///
@@ -404,7 +404,7 @@ impl CameraRenderGraph {
     }
 }
 
-/// The "target" that a [`Camera`] will render to. For example, this could be a [`Window`](bevy_window::Window)
+/// The "target" that a [`Camera`] will render to. For example, this could be a [`Window`]
 /// swapchain or an [`Image`].
 #[derive(Debug, Clone, Reflect)]
 pub enum RenderTarget {
@@ -509,9 +509,8 @@ impl NormalizedRenderTarget {
                 }),
             NormalizedRenderTarget::Image(image_handle) => {
                 let image = images.get(image_handle)?;
-                let Extent3d { width, height, .. } = image.texture_descriptor.size;
                 Some(RenderTargetInfo {
-                    physical_size: UVec2::new(width, height),
+                    physical_size: image.size(),
                     scale_factor: 1.0,
                 })
             }
@@ -784,7 +783,7 @@ pub fn sort_cameras(
     }
 }
 
-/// A subpixel offset to jitter a perspective camera's fustrum by.
+/// A subpixel offset to jitter a perspective camera's frustum by.
 ///
 /// Useful for temporal rendering techniques.
 ///
