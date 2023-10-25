@@ -151,7 +151,7 @@ pub enum NativeKeyCode {
 /// ## Usage
 ///
 /// It is used as the generic `T` value of an [`Input`] to create a `Res<Input<KeyLogic>>`.
-/// The resource values are mapped to the current layout of the keyboard and correlate to an [`ScanCode`].
+/// The resource values are mapped to the current layout of the keyboard and correlate to a [`NativeKeyCode`].
 ///
 /// ## Updating
 ///
@@ -663,14 +663,14 @@ pub enum NativeKey {
     Web(SmolStr),
 }
 
-/// The logical key code of a [`KeyboardInput`](crate::keyboard::KeyboardInput).
+/// The logical key code of a [`KeyboardInput`].
 ///
 /// ## Usage
 ///
-/// It is used as the generic `T` value of an [`Input`](crate::Input) to create a `Res<Input<KeyLogic>>`,
+/// It is used as the generic `T` value of an [`Input`] to create a `Res<Input<KeyLogic>>`,
 /// storing a `Key` and its corresponding `KeyCode`.
 ///
-/// The resource values are mapped to the current layout of the keyboard and correlate to a [`KeyCode`](KeyCode).
+/// The resource values are mapped to the current layout of the keyboard and correlate to a [`KeyCode`].
 ///
 /// ## Updating
 ///
