@@ -150,7 +150,7 @@ pub enum NativeKeyCode {
 ///
 /// ## Usage
 ///
-/// It is used as the generic `T` value of an [`Input`] to create a `Res<Input<KeyCode>>`.
+/// It is used as the generic `T` value of an [`Input`] to create a `Res<Input<KeyLogic>>`.
 /// The resource values are mapped to the current layout of the keyboard and correlate to an [`ScanCode`].
 ///
 /// ## Updating

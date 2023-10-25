@@ -213,7 +213,7 @@ fn toggle_light(
 }
 
 fn adjust_light_position(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<KeyLogic>>,
     mut lights: Query<&mut Transform, With<Lights>>,
     mut example_text: Query<&mut Text>,
 ) {
@@ -249,7 +249,7 @@ fn adjust_light_position(
 }
 
 fn cycle_filter_methods(
-    input: Res<Input<KeyCode>>,
+    input: Res<Input<KeyLogic>>,
     mut filter_methods: Query<&mut ShadowFilteringMethod>,
     mut example_text: Query<&mut Text>,
 ) {
