@@ -354,7 +354,7 @@ fn switch_mode(
         pause.0 = !pause.0;
     }
 
-    if keys.just_pressed(KeyCode::Key1) {
+    if keys.just_pressed(KeyCode::Digit1) {
         *mode = DefaultRenderMode::Deferred;
         default_opaque_renderer_method.set_to_deferred();
         println!("DefaultOpaqueRendererMethod: Deferred");
@@ -366,7 +366,7 @@ fn switch_mode(
             commands.entity(camera).insert(DeferredPrepass);
         }
     }
-    if keys.just_pressed(KeyCode::Key2) {
+    if keys.just_pressed(KeyCode::Digit2) {
         *mode = DefaultRenderMode::Forward;
         default_opaque_renderer_method.set_to_forward();
         println!("DefaultOpaqueRendererMethod: Forward");
@@ -378,7 +378,7 @@ fn switch_mode(
             commands.entity(camera).remove::<DeferredPrepass>();
         }
     }
-    if keys.just_pressed(KeyCode::Key3) {
+    if keys.just_pressed(KeyCode::Digit3) {
         *mode = DefaultRenderMode::ForwardPrepass;
         default_opaque_renderer_method.set_to_forward();
         println!("DefaultOpaqueRendererMethod: Forward + Prepass");
@@ -391,7 +391,7 @@ fn switch_mode(
         }
     }
 
-    if keys.just_pressed(KeyCode::H) {
+    if keys.just_pressed(KeyCode::KeyH) {
         *hide_ui = !*hide_ui;
     }
 
