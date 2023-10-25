@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 /// ## Usage
 ///
 /// The event is consumed inside of the [`keyboard_input_system`]
-/// to update the [`Input<KeyLogic>`] resource.
+/// to update the [`Input<KeyCode>`] and [`Input<Key>`] resources.
 #[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
@@ -43,61 +43,19 @@ pub struct KeyboardInput {
     pub window: Entity,
 }
 
-/// The stored logical key code for `Res<Input<KeyLogic>>`
-///
-/// We need to store the corresponding `KeyCode` because when modifiers are applied,
-/// the released logical key might be different from the pressed.
-/// For example, the sequence of physical keys:
-/// - Press shift
-/// - Press 'a'
-/// - Release shift
-/// - Release 'a',
-///
-/// Leads to the following underlying logical events:
-/// - Press shift
-/// - Press logic character key 'A'
-/// - Release shift
-/// - Release logic character key 'a'
-/// Note the different capitalization.
-#[derive(Debug, Clone, Eq, PartialEq, Hash, Reflect)]
-#[cfg_attr(
-    feature = "serialize",
-    derive(serde::Serialize, serde::Deserialize),
-    reflect(Serialize, Deserialize)
-)]
-pub enum KeyLogic {
-    /// Represents the logical key, typically what's visible on the keyboard.
-    Logic(Key),
-    /// Represents the ScanCode
-    Physical(KeyCode),
-}
-
-impl<I> From<I> for KeyLogic
-where
-    I: Into<Key>,
-{
-    fn from(value: I) -> Self {
-        KeyLogic::Logic(value.into())
-    }
-}
-
-impl From<KeyCode> for KeyLogic {
-    fn from(value: KeyCode) -> Self {
-        KeyLogic::Physical(value)
-    }
-}
-
-/// Updates the [`Input<KeyLogic>`] resource with the latest [`KeyboardInput`] events.
+/// Updates the [`Input<KeyCode>`] and [`Input<Key>`] resources with the latest [`KeyboardInput`] events.
 ///
 /// ## Differences
 ///
-/// The main difference between the [`KeyboardInput`] event and the [`Input<KeyLogic>`] resources is that
+/// The main difference between the [`KeyboardInput`] event and the [`Input<KeyCode>`] or [`Input<Key>`] resources is that
 /// the latter have convenient functions such as [`Input::pressed`], [`Input::just_pressed`] and [`Input::just_released`].
 pub fn keyboard_input_system(
-    mut key_input: ResMut<Input<KeyLogic>>,
+    mut key_code_input: ResMut<Input<KeyCode>>,
+    mut key_input: ResMut<Input<Key>>,
     mut keyboard_input_events: EventReader<KeyboardInput>,
 ) {
     // Avoid clearing if it's not empty to ensure change detection is not triggered.
+    key_code_input.bypass_change_detection().clear();
     key_input.bypass_change_detection().clear();
     for event in keyboard_input_events.read() {
         let KeyboardInput {
@@ -108,10 +66,13 @@ pub fn keyboard_input_system(
         } = event;
         match state {
             ButtonState::Pressed => {
-                key_input.add_dynamic_mapping(logical_key.clone(), *key_code);
-                key_input.press(*key_code);
+                key_code_input.press(*key_code);
+                key_input.press(logical_key.clone());
             }
-            ButtonState::Released => key_input.release(*key_code),
+            ButtonState::Released => {
+                key_code_input.release(*key_code);
+                key_input.release(logical_key.clone());
+            }
         }
     }
 }
@@ -667,8 +628,7 @@ pub enum NativeKey {
 ///
 /// ## Usage
 ///
-/// It is used as the generic `T` value of an [`Input`] to create a `Res<Input<KeyLogic>>`,
-/// storing a `Key` and its corresponding `KeyCode`.
+/// It is used as the generic `T` value of an [`Input`] to create a `Res<Input<KeyCode>>` and  `Res<Input<Key>>`.
 ///
 /// The resource values are mapped to the current layout of the keyboard and correlate to a [`KeyCode`].
 ///

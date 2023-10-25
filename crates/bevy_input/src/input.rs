@@ -2,8 +2,8 @@
 
 use bevy_ecs::system::Resource;
 
-use bevy_reflect::{std_traits::ReflectDefault, FromReflect, Reflect};
-use bevy_utils::{HashMap, HashSet};
+use bevy_reflect::{std_traits::ReflectDefault, Reflect};
+use bevy_utils::HashSet;
 use std::hash::Hash;
 
 // unused import, but needed for intra doc link to work
@@ -46,46 +46,29 @@ use bevy_ecs::schedule::State;
 ///[`DetectChangesMut::bypass_change_detection`]: bevy_ecs::change_detection::DetectChangesMut::bypass_change_detection
 #[derive(Debug, Clone, Resource, Reflect)]
 #[reflect(Default)]
-pub struct Input<T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static> {
+pub struct Input<T: Clone + Eq + Hash + Send + Sync + 'static> {
     /// A collection of every button that is currently being pressed.
     pressed: HashSet<T>,
     /// A collection of every button that has just been pressed.
     just_pressed: HashSet<T>,
     /// A collection of every button that has just been released.
     just_released: HashSet<T>,
-    /// To map logical keys with their respecting physical keys for reliability.
-    dynamic_map_value: HashMap<T, T>,
 }
 
-impl<T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static> Default for Input<T> {
+impl<T: Clone + Eq + Hash + Send + Sync + 'static> Default for Input<T> {
     fn default() -> Self {
         Self {
             pressed: Default::default(),
             just_pressed: Default::default(),
             just_released: Default::default(),
-            dynamic_map_value: HashMap::default(),
         }
     }
 }
 
 impl<T> Input<T>
 where
-    T: FromReflect + Clone + Eq + Hash + Send + Sync + 'static,
+    T: Clone + Eq + Hash + Send + Sync + 'static,
 {
-    /// When user adds modifiers to a keypress, the underlying Logical key might change.<br />
-    /// Use this to store a reference to the original `LogicalKey`.
-    pub fn add_dynamic_mapping<V: Into<T>, S: Into<T>>(&mut self, user_visible: V, stored: S) {
-        self.dynamic_map_value
-            .insert(user_visible.into(), stored.into());
-    }
-
-    /// To call when a dynamic key mapping is not longer needed.
-    pub fn release_dynamic_mapping<I: Into<T>>(&mut self, key: I) {
-        let to_remove = key.into();
-        self.dynamic_map_value
-            .retain(|k, v| k != &to_remove && v != &to_remove);
-    }
-
     /// Registers a press for the given `input`.
     pub fn press<I: Into<T>>(&mut self, input: I) {
         let input = input.into();
@@ -98,7 +81,6 @@ where
     /// Returns `true` if the `input` has been pressed.
     pub fn pressed<I: Into<T>>(&self, input: I) -> bool {
         let input = input.into();
-        let input = self.dynamic_map_value.get(&input).unwrap_or(&input).clone();
         self.pressed.contains(&input)
     }
 
@@ -110,7 +92,6 @@ where
     /// Registers a release for the given `input`.
     pub fn release<I: Into<T>>(&mut self, input: I) {
         let input = input.into();
-        let input = self.dynamic_map_value.get(&input).unwrap_or(&input).clone();
         // Returns `true` if the `input` was pressed.
         if self.pressed.remove(&input) {
             self.just_released.insert(input.clone());
@@ -126,7 +107,6 @@ where
     /// Returns `true` if the `input` has just been pressed.
     pub fn just_pressed<I: Into<T>>(&self, input: I) -> bool {
         let input = input.into();
-        let input = self.dynamic_map_value.get(&input).unwrap_or(&input).clone();
         self.just_pressed.contains(&input)
     }
 
@@ -145,7 +125,6 @@ where
     /// Returns `true` if the `input` has just been released.
     pub fn just_released<I: Into<T>>(&self, input: I) -> bool {
         let input = input.into();
-        let input = self.dynamic_map_value.get(&input).unwrap_or(&input).clone();
         self.just_released.contains(&input)
     }
 
@@ -159,8 +138,6 @@ where
     /// Future calls to [`Input::just_released`] for the given input will return false until a new release event occurs.
     pub fn clear_just_released<I: Into<T>>(&mut self, input: I) -> bool {
         let input = input.into();
-        let input = self.dynamic_map_value.get(&input).unwrap_or(&input).clone();
-        self.release_dynamic_mapping(input.clone());
         self.just_released.remove(&input)
     }
 
@@ -170,7 +147,6 @@ where
         self.pressed.remove(&input);
         self.just_pressed.remove(&input);
         self.just_released.remove(&input);
-        self.dynamic_map_value.clear();
     }
 
     /// Clears the `pressed`, `just_pressed`, and `just_released` data for every input.
@@ -180,7 +156,6 @@ where
         self.pressed.clear();
         self.just_pressed.clear();
         self.just_released.clear();
-        self.dynamic_map_value.clear();
     }
 
     /// Clears the `just pressed` and `just released` data for every input.
@@ -188,10 +163,7 @@ where
     /// See also [`Input::reset_all`] for a full reset.
     pub fn clear(&mut self) {
         self.just_pressed.clear();
-        let inputs_to_release = self.just_released.drain().collect::<Vec<_>>();
-        for r in inputs_to_release {
-            self.release_dynamic_mapping(r);
-        }
+        self.just_released.clear();
     }
 
     /// An iterator visiting every pressed input in arbitrary order.

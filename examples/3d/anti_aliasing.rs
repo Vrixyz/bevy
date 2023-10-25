@@ -32,7 +32,7 @@ fn main() {
 }
 
 fn modify_aa(
-    keys: Res<Input<KeyLogic>>,
+    keys: Res<Input<KeyCode>>,
     mut camera: Query<
         (
             Entity,
@@ -117,7 +117,7 @@ fn modify_aa(
 }
 
 fn modify_sharpening(
-    keys: Res<Input<KeyLogic>>,
+    keys: Res<Input<KeyCode>>,
     mut query: Query<&mut ContrastAdaptiveSharpeningSettings>,
 ) {
     for mut cas in &mut query {

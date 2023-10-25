@@ -64,7 +64,7 @@ fn make_visible(mut window: Query<&mut Window>, frames: Res<FrameCount>) {
 
 /// This system toggles the vsync mode when pressing the button V.
 /// You'll see fps increase displayed in the console.
-fn toggle_vsync(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
+fn toggle_vsync(input: Res<Input<KeyCode>>, mut windows: Query<&mut Window>) {
     if input.just_pressed(KeyCode::KeyV) {
         let mut window = windows.single_mut();
 
@@ -84,7 +84,7 @@ fn toggle_vsync(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
 /// This feature only works on some platforms. Please check the
 /// [documentation](https://docs.rs/bevy/latest/bevy/prelude/struct.Window.html#structfield.window_level)
 /// for more details.
-fn switch_level(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
+fn switch_level(input: Res<Input<KeyCode>>, mut windows: Query<&mut Window>) {
     if input.just_pressed(KeyCode::KeyT) {
         let mut window = windows.single_mut();
 
@@ -102,7 +102,7 @@ fn switch_level(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
 /// This feature only works on some platforms. Please check the
 /// [documentation](https://docs.rs/bevy/latest/bevy/prelude/struct.Window.html#structfield.enabled_buttons)
 /// for more details.
-fn toggle_window_controls(input: Res<Input<KeyLogic>>, mut windows: Query<&mut Window>) {
+fn toggle_window_controls(input: Res<Input<KeyCode>>, mut windows: Query<&mut Window>) {
     let toggle_minimize = input.just_pressed(KeyCode::Digit1);
     let toggle_maximize = input.just_pressed(KeyCode::Digit2);
     let toggle_close = input.just_pressed(KeyCode::Digit3);
@@ -131,7 +131,7 @@ fn change_title(mut windows: Query<&mut Window>, time: Res<Time>) {
     );
 }
 
-fn toggle_cursor(mut windows: Query<&mut Window>, input: Res<Input<KeyLogic>>) {
+fn toggle_cursor(mut windows: Query<&mut Window>, input: Res<Input<KeyCode>>) {
     if input.just_pressed(KeyCode::Space) {
         let mut window = windows.single_mut();
 
@@ -144,7 +144,7 @@ fn toggle_cursor(mut windows: Query<&mut Window>, input: Res<Input<KeyLogic>>) {
 }
 
 // This system will toggle the color theme used by the window
-fn toggle_theme(mut windows: Query<&mut Window>, input: Res<Input<KeyLogic>>) {
+fn toggle_theme(mut windows: Query<&mut Window>, input: Res<Input<KeyCode>>) {
     if input.just_pressed(KeyCode::KeyF) {
         let mut window = windows.single_mut();
 

@@ -187,7 +187,7 @@ fn setup(
 }
 
 fn toggle_light(
-    input: Res<Input<KeyLogic>>,
+    input: Res<Input<KeyCode>>,
     mut point_lights: Query<&mut PointLight>,
     mut directional_lights: Query<&mut DirectionalLight>,
     mut example_text: Query<&mut Text>,
@@ -276,7 +276,7 @@ fn cycle_filter_methods(
 }
 
 fn adjust_point_light_biases(
-    input: Res<Input<KeyLogic>>,
+    input: Res<Input<KeyCode>>,
     mut query: Query<&mut PointLight>,
     mut example_text: Query<&mut Text>,
 ) {
@@ -310,7 +310,7 @@ fn adjust_point_light_biases(
 }
 
 fn adjust_directional_light_biases(
-    input: Res<Input<KeyLogic>>,
+    input: Res<Input<KeyCode>>,
     mut query: Query<&mut DirectionalLight>,
     mut example_text: Query<&mut Text>,
 ) {
@@ -387,7 +387,7 @@ impl Default for CameraController {
 fn camera_controller(
     time: Res<Time>,
     mut mouse_events: EventReader<MouseMotion>,
-    key_input: Res<Input<KeyLogic>>,
+    key_input: Res<Input<KeyCode>>,
     mut query: Query<(&mut Transform, &mut CameraController), With<Camera>>,
 ) {
     let dt = time.delta_seconds();

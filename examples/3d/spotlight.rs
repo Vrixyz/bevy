@@ -145,7 +145,7 @@ fn light_sway(time: Res<Time>, mut query: Query<(&mut Transform, &mut SpotLight)
 }
 
 fn movement(
-    input: Res<Input<KeyLogic>>,
+    input: Res<Input<KeyCode>>,
     time: Res<Time>,
     mut query: Query<&mut Transform, With<Movable>>,
 ) {

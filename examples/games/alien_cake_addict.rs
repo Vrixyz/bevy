@@ -196,7 +196,7 @@ fn teardown(mut commands: Commands, entities: Query<Entity, (Without<Camera>, Wi
 // control the game character
 fn move_player(
     mut commands: Commands,
-    keyboard_input: Res<Input<KeyLogic>>,
+    keyboard_input: Res<Input<KeyCode>>,
     mut game: ResMut<Game>,
     mut transforms: Query<&mut Transform>,
     time: Res<Time>,
@@ -380,7 +380,7 @@ fn scoreboard_system(game: Res<Game>, mut query: Query<&mut Text>) {
 // restart the game when pressing spacebar
 fn gameover_keyboard(
     mut next_state: ResMut<NextState<GameState>>,
-    keyboard_input: Res<Input<KeyLogic>>,
+    keyboard_input: Res<Input<KeyCode>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
         next_state.set(GameState::Playing);

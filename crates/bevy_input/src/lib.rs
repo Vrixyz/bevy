@@ -27,7 +27,7 @@ pub mod prelude {
         gamepad::{
             Gamepad, GamepadAxis, GamepadAxisType, GamepadButton, GamepadButtonType, Gamepads,
         },
-        keyboard::{Key, KeyCode, KeyLogic},
+        keyboard::{Key, KeyCode},
         mouse::MouseButton,
         touch::{TouchInput, Touches},
         Axis, Input,
@@ -38,7 +38,7 @@ use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 
 use bevy_reflect::Reflect;
-use keyboard::{keyboard_input_system, Key, KeyCode, KeyLogic, KeyboardInput, NativeKey};
+use keyboard::{keyboard_input_system, Key, KeyCode, KeyboardInput, NativeKey};
 use mouse::{
     mouse_button_input_system, MouseButton, MouseButtonInput, MouseMotion, MouseScrollUnit,
     MouseWheel,
@@ -70,7 +70,8 @@ impl Plugin for InputPlugin {
         app
             // keyboard
             .add_event::<KeyboardInput>()
-            .init_resource::<Input<KeyLogic>>()
+            .init_resource::<Input<KeyCode>>()
+            .init_resource::<Input<Key>>()
             .add_systems(PreUpdate, keyboard_input_system.in_set(InputSystem))
             // mouse
             .add_event::<MouseButtonInput>()
@@ -116,7 +117,6 @@ impl Plugin for InputPlugin {
 
         // Register keyboard types
         app.register_type::<KeyboardInput>()
-            .register_type::<KeyLogic>()
             .register_type::<KeyCode>()
             .register_type::<Key>()
             .register_type::<NativeKey>();

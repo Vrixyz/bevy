@@ -10,7 +10,7 @@ fn main() {
 }
 
 /// This system prints 'A' character key state
-fn keyboard_input_system(keyboard_input: Res<Input<KeyLogic>>) {
+fn keyboard_input_system(keyboard_input: Res<Input<Key>>) {
     if keyboard_input.pressed("a") {
         info!("Character lowercase 'a' currently pressed");
     }

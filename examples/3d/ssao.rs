@@ -131,7 +131,7 @@ fn update(
     mut text: Query<&mut Text>,
     mut sphere: Query<&mut Transform, With<SphereMarker>>,
     mut commands: Commands,
-    keycode: Res<Input<KeyLogic>>,
+    keycode: Res<Input<KeyCode>>,
     time: Res<Time>,
 ) {
     let mut sphere = sphere.single_mut();

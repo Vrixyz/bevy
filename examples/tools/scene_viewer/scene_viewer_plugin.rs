@@ -145,7 +145,7 @@ fn scene_load_check(
 }
 
 fn update_lights(
-    key_input: Res<Input<KeyLogic>>,
+    key_input: Res<Input<KeyCode>>,
     time: Res<Time>,
     mut query: Query<(&mut Transform, &mut DirectionalLight)>,
     mut animate_directional_light: Local<bool>,
@@ -202,7 +202,7 @@ impl CameraTracker {
 
 fn camera_tracker(
     mut camera_tracker: ResMut<CameraTracker>,
-    keyboard_input: Res<Input<KeyLogic>>,
+    keyboard_input: Res<Input<KeyCode>>,
     mut queries: ParamSet<(
         Query<(Entity, &mut Camera), (Added<Camera>, Without<CameraController>)>,
         Query<(Entity, &mut Camera), (Added<Camera>, With<CameraController>)>,

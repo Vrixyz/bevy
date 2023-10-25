@@ -261,7 +261,7 @@ fn animate_light_direction(
 }
 
 fn movement(
-    input: Res<Input<KeyLogic>>,
+    input: Res<Input<KeyCode>>,
     time: Res<Time>,
     mut query: Query<&mut Transform, With<Movable>>,
 ) {

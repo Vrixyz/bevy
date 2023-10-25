@@ -2,10 +2,7 @@ use crate::{PrimaryWindow, Window, WindowCloseRequested};
 
 use bevy_app::AppExit;
 use bevy_ecs::prelude::*;
-use bevy_input::{
-    keyboard::{KeyCode, KeyLogic},
-    Input,
-};
+use bevy_input::{keyboard::KeyCode, Input};
 
 /// Exit the application when there are no open windows.
 ///
@@ -55,7 +52,7 @@ pub fn close_when_requested(mut commands: Commands, mut closed: EventReader<Wind
 pub fn close_on_esc(
     mut commands: Commands,
     focused_windows: Query<(Entity, &Window)>,
-    input: Res<Input<KeyLogic>>,
+    input: Res<Input<KeyCode>>,
 ) {
     for (window, focus) in focused_windows.iter() {
         if !focus.focused {

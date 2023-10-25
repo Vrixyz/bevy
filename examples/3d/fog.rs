@@ -159,7 +159,7 @@ fn update_system(
     mut camera: Query<(&mut FogSettings, &mut Transform)>,
     mut text: Query<&mut Text>,
     time: Res<Time>,
-    keycode: Res<Input<KeyLogic>>,
+    keycode: Res<Input<KeyCode>>,
 ) {
     let now = time.elapsed_seconds();
     let delta = time.delta_seconds();
