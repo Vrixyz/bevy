@@ -25,7 +25,7 @@ use std::hash::Hash;
 /// you should use a custom resource or a state for that:
 /// ```rust,no_run
 /// use bevy::prelude::*;
-/// use bevy::input::common_conditions::input_toggle_active;
+/// use bevy::input::common_conditions::input_just_pressed;
 ///
 /// #[derive(Resource, Default)]
 /// struct Paused(bool);
@@ -34,14 +34,13 @@ use std::hash::Hash;
 ///     App::new()
 ///         .add_plugins(DefaultPlugins)
 ///         .init_resource::<Paused>()
+///         .add_systems(Update, toggle_pause_state.run_if(input_just_pressed(KeyCode::Escape)))
 ///         .add_systems(Update, pause_menu.run_if(|paused: Res<Paused>| paused.0))
 ///         .run();
 /// }
 ///
-/// fn update_pause_state(mut paused: ResMut<Paused>, input: Input<KeyLogic>) {
-///   if input.just_pressed(KeyCode::Escape) {
+/// fn toggle_pause_state(mut paused: ResMut<Paused>) {
 ///     paused.0 = !paused.0;
-///   }
 /// }
 ///
 /// fn pause_menu() {
