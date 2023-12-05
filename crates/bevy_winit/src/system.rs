@@ -175,6 +175,8 @@ pub(crate) fn changed_windows(
                     window.resolution.physical_width(),
                     window.resolution.physical_height(),
                 );
+
+                info!("requesting_size: {:?}", &physical_size);
                 if let Some(size_now) = winit_window.request_inner_size(physical_size) {
                     crate::react_to_resize(&mut window, size_now, &mut event_writers, entity);
                 }

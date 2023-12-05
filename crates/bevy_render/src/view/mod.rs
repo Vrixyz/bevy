@@ -22,6 +22,7 @@ use bevy_ecs::prelude::*;
 use bevy_math::{Mat4, UVec4, Vec3, Vec4, Vec4Swizzles};
 use bevy_reflect::Reflect;
 use bevy_transform::components::GlobalTransform;
+use bevy_utils::tracing::info;
 use bevy_utils::HashMap;
 use std::sync::{
     atomic::{AtomicUsize, Ordering},
@@ -436,6 +437,7 @@ fn prepare_view_targets(
     cameras: Query<(Entity, &ExtractedCamera, &ExtractedView)>,
     manual_texture_views: Res<ManualTextureViews>,
 ) {
+    info!("prepare_view_targets");
     let mut textures = HashMap::default();
     for (entity, camera, view) in cameras.iter() {
         if let (Some(target_size), Some(target)) = (camera.physical_target_size, &camera.target) {
@@ -443,6 +445,7 @@ fn prepare_view_targets(
                 target.get_texture_view(&windows, &images, &manual_texture_views),
                 target.get_texture_format(&windows, &images, &manual_texture_views),
             ) {
+                info!("{:?}", &target_size);
                 let size = Extent3d {
                     width: target_size.x,
                     height: target_size.y,

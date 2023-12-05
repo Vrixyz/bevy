@@ -1,6 +1,7 @@
 use crate::WinitWindows;
 use bevy_app::{App, Plugin, Update};
 use bevy_ecs::prelude::*;
+use bevy_utils::tracing::info;
 use crossbeam_channel::{Receiver, Sender};
 use wasm_bindgen::JsCast;
 use winit::dpi::LogicalSize;
@@ -31,6 +32,7 @@ fn canvas_parent_resize_event_handler(
 ) {
     for event in resize_events.receiver.try_iter() {
         if let Some(window) = winit_windows.get_window(event.window) {
+            info!("canvas_parent_resize_event_handler: {:?}", &event.size);
             let _ = window.request_inner_size(event.size);
         }
     }

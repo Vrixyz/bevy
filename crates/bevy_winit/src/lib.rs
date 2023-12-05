@@ -33,7 +33,7 @@ use bevy_input::{
 use bevy_math::{ivec2, DVec2, Vec2};
 #[cfg(not(target_arch = "wasm32"))]
 use bevy_tasks::tick_global_task_pools_on_main_thread;
-use bevy_utils::tracing::{error, trace, warn};
+use bevy_utils::tracing::{error, info, trace, warn};
 use bevy_window::{
     exit_on_all_closed, ApplicationLifetime, CursorEntered, CursorLeft, CursorMoved,
     FileDragAndDrop, Ime, ReceivedCharacter, RequestRedraw, Window,
@@ -468,6 +468,7 @@ pub fn winit_runner(mut app: App) {
 
                 match event {
                     WindowEvent::Resized(size) => {
+                        info!("WindowEvent::Resized sent us: {:?}", &size);
                         react_to_resize(&mut window, size, &mut event_writers, window_entity);
                     }
                     WindowEvent::CloseRequested => {
@@ -577,6 +578,7 @@ pub fn winit_runner(mut app: App) {
                             let maybe_new_inner_size =
                                 winit::dpi::LogicalSize::new(window.width(), window.height())
                                     .to_physical::<u32>(forced_factor);
+                            info!("request: {:?}", &new_inner_size);
                             if let Err(err) = inner_size_writer.request_inner_size(new_inner_size) {
                                 warn!("Winit Failed to resize the window: {err}");
                             } else {
@@ -888,6 +890,7 @@ fn react_to_resize(
     event_writers: &mut WindowAndInputEventWriters<'_>,
     window_entity: Entity,
 ) {
+    info!("react_to_resize: {:?}", &size);
     window
         .resolution
         .set_physical_resolution(size.width, size.height);
