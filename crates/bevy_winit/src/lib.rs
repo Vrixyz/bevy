@@ -33,7 +33,7 @@ use bevy_input::{
 use bevy_math::{ivec2, DVec2, Vec2};
 #[cfg(not(target_arch = "wasm32"))]
 use bevy_tasks::tick_global_task_pools_on_main_thread;
-use bevy_utils::tracing::{error, trace, warn};
+use bevy_utils::tracing::{error, info, trace, warn};
 use bevy_window::{
     exit_on_all_closed, ApplicationLifetime, CursorEntered, CursorLeft, CursorMoved,
     FileDragAndDrop, Ime, ReceivedCharacter, RequestRedraw, Window,
@@ -470,6 +470,7 @@ pub fn winit_runner(mut app: App) {
 
                 match event {
                     WindowEvent::Resized(size) => {
+                        info!("WindowEvent::Resized sent us: {:?}", &size);
                         react_to_resize(&mut window, size, &mut event_writers, window_entity);
                     }
                     WindowEvent::CloseRequested => {
@@ -557,6 +558,7 @@ pub fn winit_runner(mut app: App) {
                         scale_factor,
                         mut inner_size_writer,
                     } => {
+                        info!("{scale_factor:?}");
                         event_writers.window_backend_scale_factor_changed.send(
                             WindowBackendScaleFactorChanged {
                                 window: window_entity,
@@ -579,6 +581,7 @@ pub fn winit_runner(mut app: App) {
                             let maybe_new_inner_size =
                                 winit::dpi::LogicalSize::new(window.width(), window.height())
                                     .to_physical::<u32>(forced_factor);
+                            info!("request: {:?}", &new_inner_size);
                             if let Err(err) = inner_size_writer.request_inner_size(new_inner_size) {
                                 warn!("Winit Failed to resize the window: {err}");
                             } else {
@@ -605,6 +608,8 @@ pub fn winit_runner(mut app: App) {
                                 height: new_logical_height,
                             });
                         }
+
+                        info!("set_physical_resolution: {:?}", &new_inner_size);
                         window
                             .resolution
                             .set_physical_resolution(new_inner_size.width, new_inner_size.height);
@@ -896,10 +901,20 @@ fn react_to_resize(
     event_writers: &mut WindowAndInputEventWriters<'_>,
     window_entity: Entity,
 ) {
+    info!("react_to_resize: {:?}", &size);
+    info!("window: {:?}", (window.width(), window.height()));
+    let scale_factor = window.resolution.scale_factor();
+    info!("scale_factor: {}", scale_factor);
+    let new_resolution = (
+        (size.width as f64 / scale_factor) as f32,
+        (size.height as f64 / scale_factor) as f32,
+    );
+    info!("new_resolution: {:?}", new_resolution);
+
     window
         .resolution
-        .set_physical_resolution(size.width, size.height);
-
+        .set_physical_resolution(new_resolution.0 as u32, new_resolution.1 as u32);
+    info!("new window: {:?}", (window.width(), window.height()));
     event_writers.window_resized.send(WindowResized {
         window: window_entity,
         width: window.width(),
