@@ -9,8 +9,6 @@
 pub mod accessibility;
 mod converters;
 mod system;
-#[cfg(target_arch = "wasm32")]
-mod web_resize;
 mod winit_config;
 mod winit_windows;
 
@@ -55,8 +53,6 @@ use winit::{
 use crate::accessibility::{AccessKitAdapters, AccessibilityPlugin, WinitActionHandlers};
 
 use crate::converters::convert_winit_theme;
-#[cfg(target_arch = "wasm32")]
-use crate::web_resize::{CanvasParentResizeEventChannel, CanvasParentResizePlugin};
 
 /// [`AndroidApp`] provides an interface to query the application state as well as monitor events
 /// (for example lifecycle and input events).
@@ -142,9 +138,6 @@ impl Plugin for WinitPlugin {
 
         app.add_plugins(AccessibilityPlugin);
 
-        #[cfg(target_arch = "wasm32")]
-        app.add_plugins(CanvasParentResizePlugin);
-
         let event_loop = event_loop_builder
             .build()
             .expect("Failed to build event loop");
@@ -180,7 +173,6 @@ impl Plugin for WinitPlugin {
                 NonSendMut<AccessKitAdapters>,
                 ResMut<WinitActionHandlers>,
                 ResMut<AccessibilityRequested>,
-                ResMut<CanvasParentResizeEventChannel>,
             )> = SystemState::from_world(&mut app.world);
 
             #[cfg(not(target_arch = "wasm32"))]
@@ -203,7 +195,6 @@ impl Plugin for WinitPlugin {
                 adapters,
                 handlers,
                 accessibility_requested,
-                event_channel,
             ) = create_window_system_state.get_mut(&mut app.world);
 
             create_windows(
@@ -215,8 +206,6 @@ impl Plugin for WinitPlugin {
                 adapters,
                 handlers,
                 accessibility_requested,
-                #[cfg(target_arch = "wasm32")]
-                event_channel,
             );
 
             create_window_system_state.apply(&mut app.world);
@@ -339,7 +328,6 @@ pub fn winit_runner(mut app: App) {
         NonSend<AccessKitAdapters>,
     )> = SystemState::new(&mut app.world);
 
-    #[cfg(not(target_arch = "wasm32"))]
     let mut create_window_system_state: SystemState<(
         Commands,
         Query<(Entity, &mut Window), Added<Window>>,
@@ -348,18 +336,6 @@ pub fn winit_runner(mut app: App) {
         NonSendMut<AccessKitAdapters>,
         ResMut<WinitActionHandlers>,
         ResMut<AccessibilityRequested>,
-    )> = SystemState::from_world(&mut app.world);
-
-    #[cfg(target_arch = "wasm32")]
-    let mut create_window_system_state: SystemState<(
-        Commands,
-        Query<(Entity, &mut Window), Added<Window>>,
-        EventWriter<WindowCreated>,
-        NonSendMut<WinitWindows>,
-        NonSendMut<AccessKitAdapters>,
-        ResMut<WinitActionHandlers>,
-        ResMut<AccessibilityRequested>,
-        ResMut<CanvasParentResizeEventChannel>,
     )> = SystemState::from_world(&mut app.world);
 
     // setup up the event loop
@@ -389,7 +365,6 @@ pub fn winit_runner(mut app: App) {
                 StartCause::Init => {
                     #[cfg(any(target_os = "ios", target_os = "macos"))]
                     {
-                        #[cfg(not(target_arch = "wasm32"))]
                         let (
                             commands,
                             mut windows,
@@ -398,18 +373,6 @@ pub fn winit_runner(mut app: App) {
                             adapters,
                             handlers,
                             accessibility_requested,
-                        ) = create_window_system_state.get_mut(&mut app.world);
-
-                        #[cfg(target_arch = "wasm32")]
-                        let (
-                            commands,
-                            mut windows,
-                            event_writer,
-                            winit_windows,
-                            adapters,
-                            handlers,
-                            accessibility_requested,
-                            event_channel,
                         ) = create_window_system_state.get_mut(&mut app.world);
 
                         create_windows(
@@ -421,8 +384,6 @@ pub fn winit_runner(mut app: App) {
                             adapters,
                             handlers,
                             accessibility_requested,
-                            #[cfg(target_arch = "wasm32")]
-                            event_channel,
                         );
 
                         create_window_system_state.apply(&mut app.world);
@@ -841,7 +802,6 @@ pub fn winit_runner(mut app: App) {
 
                     // create any new windows
                     // (even if app did not update, some may have been created by plugin setup)
-                    #[cfg(not(target_arch = "wasm32"))]
                     let (
                         commands,
                         mut windows,
@@ -850,18 +810,6 @@ pub fn winit_runner(mut app: App) {
                         adapters,
                         handlers,
                         accessibility_requested,
-                    ) = create_window_system_state.get_mut(&mut app.world);
-
-                    #[cfg(target_arch = "wasm32")]
-                    let (
-                        commands,
-                        mut windows,
-                        event_writer,
-                        winit_windows,
-                        adapters,
-                        handlers,
-                        accessibility_requested,
-                        event_channel,
                     ) = create_window_system_state.get_mut(&mut app.world);
 
                     create_windows(
@@ -873,8 +821,6 @@ pub fn winit_runner(mut app: App) {
                         adapters,
                         handlers,
                         accessibility_requested,
-                        #[cfg(target_arch = "wasm32")]
-                        event_channel,
                     );
 
                     create_window_system_state.apply(&mut app.world);
